@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BodyType {
+  SEDAN
+  SUV
+  HATCHBACK
+  COUPE
+  WAGON
+  PICKUP
+  VAN
+  CONVERTIBLE
+}
+
+model Car {
+  id        String   @id @default(uuid())
+  brand     String
+  model     String
+  year      Int
+  price     Float
+  mileage   Int      @default(0)
+  color     String
+  bodyType  BodyType @default(SEDAN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([brand])
+  @@index([price])
+  @@index([year])
+  @@index([createdAt])
+}
