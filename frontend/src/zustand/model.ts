@@ -33,7 +33,7 @@ interface CarsState {
   setPageSize: (pageSize: number) => void;
   resetFilters: () => void;
   createCar: (input: CreateCarInput) => Promise<void>;
-  updateCar: (id: string, input: UpdateCarInput) => Promise<void>;
+  updateCar: (payload: { id: string; input: UpdateCarInput }) => Promise<void>;
   deleteCar: (id: string) => Promise<void>;
 }
 
@@ -101,10 +101,10 @@ function createCarsModel() {
           set({ isMutating: false });
         }
       },
-      updateCar: async (id, input) => {
+      updateCar: async (payload) => {
         set({ isMutating: true });
         try {
-          await updateCar(id, input);
+          await updateCar(payload);
           await get().fetchCars();
         } finally {
           set({ isMutating: false });
@@ -232,4 +232,5 @@ const _typecheck: CarsHooksContract = {
   useUpdateCar,
   useDeleteCar,
 };
+
 void _typecheck;

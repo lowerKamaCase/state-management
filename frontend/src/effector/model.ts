@@ -13,10 +13,8 @@ import {
   type CarsFilters,
   type CarSortField,
   type CarsQueryParams,
-  type CreateCarInput,
   type PaginatedMeta,
   type SortOrder,
-  type UpdateCarInput,
 } from '../shared/types/car';
 import type { CarsHooksContract } from '../shared/types/hooksContract';
 
@@ -36,11 +34,7 @@ function createCarsModel() {
 
   const fetchCarsFx = createEffect(getCars);
   const createCarFx = createEffect(createCar);
-  const updateCarFx = createEffect(
-    (p: { id: string; input: UpdateCarInput }) => {
-      return updateCar(p.id, p.input);
-    },
-  );
+  const updateCarFx = createEffect(updateCar);
   const deleteCarFx = createEffect(deleteCar);
 
   const $queryParams = createStore<CarsQueryParams>(DEFAULT_QUERY_PARAMS)
@@ -140,9 +134,7 @@ function createCarsModel() {
   function useCreateCar() {
     const [run, isPending] = useUnit([createCarFx, createCarFx.pending]);
     return {
-      createCar: async (input: CreateCarInput) => {
-        await run(input);
-      },
+      createCar: run,
       isPending,
       error: null,
     };
@@ -151,9 +143,7 @@ function createCarsModel() {
   function useUpdateCar() {
     const [run, isPending] = useUnit([updateCarFx, updateCarFx.pending]);
     return {
-      updateCar: async (id: string, input: UpdateCarInput) => {
-        await run({ id, input });
-      },
+      updateCar: run,
       isPending,
       error: null,
     };
@@ -192,4 +182,5 @@ const _typecheck: CarsHooksContract = {
   useUpdateCar,
   useDeleteCar,
 };
+
 void _typecheck;

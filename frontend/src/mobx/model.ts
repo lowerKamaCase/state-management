@@ -93,10 +93,10 @@ function createCarsModel() {
         });
       }
     }
-    async updateCar(id: string, input: UpdateCarInput) {
+    async updateCar(payload: { id: string; input: UpdateCarInput }) {
       this.isMutating = true;
       try {
-        await updateCar(id, input);
+        await updateCar(payload);
         await this.fetchCars();
       } finally {
         runInAction(() => {
@@ -198,4 +198,5 @@ const _typecheck: CarsHooksContract = {
   useUpdateCar,
   useDeleteCar,
 };
+
 void _typecheck;

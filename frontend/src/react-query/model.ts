@@ -16,9 +16,7 @@ import {
   type CarsFilters,
   type CarSortField,
   type CarsQueryParams,
-  type CreateCarInput,
   type SortOrder,
-  type UpdateCarInput,
 } from '../shared/types/car';
 import type { CarsHooksContract } from '../shared/types/hooksContract';
 
@@ -83,9 +81,7 @@ export function useCreateCar() {
     },
   });
   return {
-    createCar: async (input: CreateCarInput) => {
-      await mutation.mutateAsync(input);
-    },
+    createCar: mutation.mutateAsync,
     isPending: mutation.isPending,
     error: mutation.error ? (mutation.error as Error).message : null,
   };
@@ -94,17 +90,13 @@ export function useCreateCar() {
 export function useUpdateCar() {
   const qc = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (p: { id: string; input: UpdateCarInput }) => {
-      return updateCar(p.id, p.input);
-    },
+    mutationFn: updateCar,
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ['cars'] });
     },
   });
   return {
-    updateCar: async (id: string, input: UpdateCarInput) => {
-      await mutation.mutateAsync({ id, input });
-    },
+    updateCar: mutation.mutateAsync,
     isPending: mutation.isPending,
     error: mutation.error ? (mutation.error as Error).message : null,
   };
@@ -132,4 +124,5 @@ const _typecheck: CarsHooksContract = {
   useUpdateCar,
   useDeleteCar,
 };
+
 void _typecheck;

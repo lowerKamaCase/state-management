@@ -37,12 +37,15 @@ export interface CarsHooksContract {
   useCarsQueryState: () => CarsQueryStateResult;
   useCars: (params?: CarsQueryParams) => CarsListResult;
   useCreateCar: () => {
-    createCar: (input: CreateCarInput) => Promise<void>;
+    createCar: (input: CreateCarInput) => Promise<unknown>;
     isPending: boolean;
     error: string | null;
   };
   useUpdateCar: () => {
-    updateCar: (id: string, input: UpdateCarInput) => Promise<void>;
+    updateCar: (payload: {
+      id: string;
+      input: UpdateCarInput;
+    }) => Promise<unknown>;
     isPending: boolean;
     error: string | null;
   };

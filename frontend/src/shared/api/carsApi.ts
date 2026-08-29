@@ -56,7 +56,11 @@ export const createCar = (input: CreateCarInput): Promise<Car> => {
   return request('/cars', { method: 'POST', body: JSON.stringify(input) });
 };
 
-export const updateCar = (id: string, input: UpdateCarInput): Promise<Car> => {
+export const updateCar = (payload: {
+  id: string;
+  input: UpdateCarInput;
+}): Promise<Car> => {
+  const { id, input } = payload;
   return request(`/cars/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(input),

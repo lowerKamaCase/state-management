@@ -37,7 +37,7 @@ export const CarsPage = observer(function CarsPage() {
 
   const handleSubmit = async (values: CreateCarInput | UpdateCarInput) => {
     if (modalState?.mode === 'edit' && modalState.car) {
-      await updateCar(modalState.car.id, values);
+      await updateCar({ id: modalState.car.id, input: values });
     } else {
       await createCar(values as CreateCarInput);
     }
