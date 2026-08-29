@@ -174,9 +174,7 @@ function createCarsModel() {
       isLoading,
       isFetching: isLoading,
       error,
-      refetch: () => {
-        return void fetchCars();
-      },
+      refetch: fetchCars,
     };
   }
 

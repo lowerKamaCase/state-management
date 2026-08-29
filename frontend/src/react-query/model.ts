@@ -70,20 +70,16 @@ export function useCars(params: CarsQueryParams = DEFAULT_QUERY_PARAMS) {
     isLoading: query.isLoading,
     isFetching: query.isFetching,
     error: query.error ? (query.error as Error).message : null,
-    refetch: () => {
-      void query.refetch();
-    },
+    refetch: query.refetch,
   };
 }
 
 export function useCreateCar() {
   const qc = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (input: CreateCarInput) => {
-      return createCar(input);
-    },
+    mutationFn: createCar,
     onSuccess: () => {
-      return qc.invalidateQueries({ queryKey: ['cars'] });
+      void qc.invalidateQueries({ queryKey: ['cars'] });
     },
   });
   return {
@@ -102,7 +98,7 @@ export function useUpdateCar() {
       return updateCar(p.id, p.input);
     },
     onSuccess: () => {
-      return qc.invalidateQueries({ queryKey: ['cars'] });
+      void qc.invalidateQueries({ queryKey: ['cars'] });
     },
   });
   return {
@@ -117,11 +113,9 @@ export function useUpdateCar() {
 export function useDeleteCar() {
   const qc = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (id: string) => {
-      return deleteCar(id);
-    },
+    mutationFn: deleteCar,
     onSuccess: () => {
-      return qc.invalidateQueries({ queryKey: ['cars'] });
+      void qc.invalidateQueries({ queryKey: ['cars'] });
     },
   });
   return {

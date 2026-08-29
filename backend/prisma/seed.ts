@@ -46,5 +46,5 @@ main()
     process.exit(1);
   })
   .finally(() => {
-    return prisma.$disconnect();
+    void prisma.$disconnect();
   });

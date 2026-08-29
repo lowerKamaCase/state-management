@@ -35,17 +35,13 @@ function createCarsModel() {
   const refreshRequested = createEvent();
 
   const fetchCarsFx = createEffect(getCars);
-  const createCarFx = createEffect((input: CreateCarInput) => {
-    return createCar(input);
-  });
+  const createCarFx = createEffect(createCar);
   const updateCarFx = createEffect(
     (p: { id: string; input: UpdateCarInput }) => {
       return updateCar(p.id, p.input);
     },
   );
-  const deleteCarFx = createEffect((id: string) => {
-    return deleteCar(id);
-  });
+  const deleteCarFx = createEffect(deleteCar);
 
   const $queryParams = createStore<CarsQueryParams>(DEFAULT_QUERY_PARAMS)
     .on(filtersChanged, (s, patch) => {

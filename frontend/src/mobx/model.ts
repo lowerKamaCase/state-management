@@ -122,21 +122,16 @@ function createCarsModel() {
   function useCarsQueryState() {
     return {
       params: carsStore.params,
-      setFilters: (patch: Partial<CarsFilters>) => {
-        carsStore.setFilters(patch);
-      },
-      setSort: (sortBy: CarSortField, order: SortOrder) => {
-        carsStore.setSort(sortBy, order);
-      },
-      setPage: (page: number) => {
-        carsStore.setPage(page);
-      },
-      setPageSize: (pageSize: number) => {
-        carsStore.setPageSize(pageSize);
-      },
-      resetFilters: () => {
-        carsStore.resetFilters();
-      },
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      setFilters: carsStore.setFilters,
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      setSort: carsStore.setSort,
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      setPage: carsStore.setPage,
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      setPageSize: carsStore.setPageSize,
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      resetFilters: carsStore.resetFilters,
     };
   }
 
@@ -147,9 +142,8 @@ function createCarsModel() {
       isLoading: carsStore.isLoading,
       isFetching: carsStore.isLoading,
       error: carsStore.error,
-      refetch: () => {
-        return void carsStore.fetchCars();
-      },
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      refetch: carsStore.fetchCars,
     };
   }
 

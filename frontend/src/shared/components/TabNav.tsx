@@ -17,7 +17,9 @@ export function TabNav() {
     <Tabs
       value={current}
       onChange={(value) => {
-        return value && navigate(`/${value}`);
+        if (value) {
+          void navigate(`/${value}`);
+        }
       }}
       mb="md"
     >
