@@ -87,10 +87,8 @@ export function useCreateCar() {
     },
   });
   return {
-    createCar: (input: CreateCarInput) => {
-      return mutation.mutateAsync(input).then(() => {
-        return undefined;
-      });
+    createCar: async (input: CreateCarInput) => {
+      await mutation.mutateAsync(input);
     },
     isPending: mutation.isPending,
     error: mutation.error ? (mutation.error as Error).message : null,
@@ -108,10 +106,8 @@ export function useUpdateCar() {
     },
   });
   return {
-    updateCar: (id: string, input: UpdateCarInput) => {
-      return mutation.mutateAsync({ id, input }).then(() => {
-        return undefined;
-      });
+    updateCar: async (id: string, input: UpdateCarInput) => {
+      await mutation.mutateAsync({ id, input });
     },
     isPending: mutation.isPending,
     error: mutation.error ? (mutation.error as Error).message : null,
@@ -129,11 +125,7 @@ export function useDeleteCar() {
     },
   });
   return {
-    deleteCar: (id: string) => {
-      return mutation.mutateAsync(id).then(() => {
-        return undefined;
-      });
-    },
+    deleteCar: mutation.mutateAsync,
     isPending: mutation.isPending,
     error: mutation.error ? (mutation.error as Error).message : null,
   };

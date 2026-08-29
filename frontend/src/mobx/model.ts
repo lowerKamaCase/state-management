@@ -155,9 +155,8 @@ function createCarsModel() {
 
   function useCreateCar() {
     return {
-      createCar: (input: CreateCarInput) => {
-        return carsStore.createCar(input);
-      },
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      createCar: carsStore.createCar,
       isPending: carsStore.isMutating,
       error: null,
     };
@@ -165,9 +164,8 @@ function createCarsModel() {
 
   function useUpdateCar() {
     return {
-      updateCar: (id: string, input: UpdateCarInput) => {
-        return carsStore.updateCar(id, input);
-      },
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      updateCar: carsStore.updateCar,
       isPending: carsStore.isMutating,
       error: null,
     };
@@ -175,9 +173,8 @@ function createCarsModel() {
 
   function useDeleteCar() {
     return {
-      deleteCar: (id: string) => {
-        return carsStore.deleteCar(id);
-      },
+      // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+      deleteCar: carsStore.deleteCar,
       isPending: carsStore.isMutating,
       error: null,
     };

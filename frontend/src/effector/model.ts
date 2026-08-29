@@ -144,10 +144,8 @@ function createCarsModel() {
   function useCreateCar() {
     const [run, isPending] = useUnit([createCarFx, createCarFx.pending]);
     return {
-      createCar: (input: CreateCarInput) => {
-        return run(input).then(() => {
-          return undefined;
-        });
+      createCar: async (input: CreateCarInput) => {
+        await run(input);
       },
       isPending,
       error: null,
@@ -157,10 +155,8 @@ function createCarsModel() {
   function useUpdateCar() {
     const [run, isPending] = useUnit([updateCarFx, updateCarFx.pending]);
     return {
-      updateCar: (id: string, input: UpdateCarInput) => {
-        return run({ id, input }).then(() => {
-          return undefined;
-        });
+      updateCar: async (id: string, input: UpdateCarInput) => {
+        await run({ id, input });
       },
       isPending,
       error: null,
@@ -170,11 +166,7 @@ function createCarsModel() {
   function useDeleteCar() {
     const [run, isPending] = useUnit([deleteCarFx, deleteCarFx.pending]);
     return {
-      deleteCar: (id: string) => {
-        return run(id).then(() => {
-          return undefined;
-        });
-      },
+      deleteCar: run,
       isPending,
       error: null,
     };
