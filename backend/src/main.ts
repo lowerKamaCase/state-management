@@ -25,6 +25,7 @@ async function bootstrap() {
   app.enableCors({
     origin: origins.length ? origins : true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    maxAge: 86400,
   });
 
   const swaggerConfig = new DocumentBuilder()
