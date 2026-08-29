@@ -20,7 +20,7 @@ services:
       - key: PORT
         value: 3000
       - key: CORS_ORIGINS
-        sync: false
+        value: http://localhost:5173,https://tables-frontend.onrender.com
       - key: NODE_ENV
         value: production
 
