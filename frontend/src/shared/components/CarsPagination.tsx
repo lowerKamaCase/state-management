@@ -30,7 +30,9 @@ export function CarsPagination({
         w={100}
         value={String(pageSize)}
         onChange={(value) => {
-          return value && onPageSizeChange(Number(value));
+          if (value) {
+            onPageSizeChange(Number(value));
+          }
         }}
         data={PAGE_SIZE_OPTIONS.map((n) => {
           return { value: String(n), label: `${n} / page` };

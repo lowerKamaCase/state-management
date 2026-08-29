@@ -56,7 +56,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Brand"
         value={brand}
         onChange={(e) => {
-          return setBrand(e.currentTarget.value);
+          setBrand(e.currentTarget.value);
         }}
         w={140}
       />
@@ -64,7 +64,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Color"
         value={color}
         onChange={(e) => {
-          return setColor(e.currentTarget.value);
+          setColor(e.currentTarget.value);
         }}
         w={120}
       />
@@ -73,7 +73,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         placeholder="brand or model"
         value={search}
         onChange={(e) => {
-          return setSearch(e.currentTarget.value);
+          setSearch(e.currentTarget.value);
         }}
         w={160}
       />
@@ -84,7 +84,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         data={BODY_TYPES}
         value={filters.bodyType ?? null}
         onChange={(value) => {
-          return onChange({ bodyType: (value as BodyType) || undefined });
+          onChange({ bodyType: (value as BodyType) || undefined });
         }}
         w={140}
       />
@@ -92,7 +92,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Min year"
         value={filters.minYear ?? ''}
         onChange={(value) => {
-          return onChange({
+          onChange({
             minYear: value === '' ? undefined : Number(value),
           });
         }}
@@ -102,7 +102,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Max year"
         value={filters.maxYear ?? ''}
         onChange={(value) => {
-          return onChange({
+          onChange({
             maxYear: value === '' ? undefined : Number(value),
           });
         }}
@@ -112,7 +112,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Min price"
         value={filters.minPrice ?? ''}
         onChange={(value) => {
-          return onChange({
+          onChange({
             minPrice: value === '' ? undefined : Number(value),
           });
         }}
@@ -122,7 +122,7 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         label="Max price"
         value={filters.maxPrice ?? ''}
         onChange={(value) => {
-          return onChange({
+          onChange({
             maxPrice: value === '' ? undefined : Number(value),
           });
         }}

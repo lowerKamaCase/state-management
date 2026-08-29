@@ -31,27 +31,27 @@ export function useCarsQueryState() {
   return {
     params,
     setFilters: (patch: Partial<CarsFilters>) => {
-      return setParams((p) => {
+      setParams((p) => {
         return { ...p, ...patch, page: 1 };
       });
     },
     setSort: (sortBy: CarSortField, order: SortOrder) => {
-      return setParams((p) => {
+      setParams((p) => {
         return { ...p, sortBy, order, page: 1 };
       });
     },
     setPage: (page: number) => {
-      return setParams((p) => {
+      setParams((p) => {
         return { ...p, page };
       });
     },
     setPageSize: (pageSize: number) => {
-      return setParams((p) => {
+      setParams((p) => {
         return { ...p, pageSize, page: 1 };
       });
     },
     resetFilters: () => {
-      return setParams(DEFAULT_QUERY_PARAMS);
+      setParams(DEFAULT_QUERY_PARAMS);
     },
   };
 }

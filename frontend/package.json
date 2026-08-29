@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "oxlint -c ../.oxlintrc.json .",
+    "lint": "oxlint -c ../.oxlintrc.json . --type-aware",
     "preview": "vite preview"
   },
   "dependencies": {

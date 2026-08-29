@@ -123,19 +123,19 @@ function createCarsModel() {
     return {
       params: carsStore.params,
       setFilters: (patch: Partial<CarsFilters>) => {
-        return carsStore.setFilters(patch);
+        carsStore.setFilters(patch);
       },
       setSort: (sortBy: CarSortField, order: SortOrder) => {
-        return carsStore.setSort(sortBy, order);
+        carsStore.setSort(sortBy, order);
       },
       setPage: (page: number) => {
-        return carsStore.setPage(page);
+        carsStore.setPage(page);
       },
       setPageSize: (pageSize: number) => {
-        return carsStore.setPageSize(pageSize);
+        carsStore.setPageSize(pageSize);
       },
       resetFilters: () => {
-        return carsStore.resetFilters();
+        carsStore.resetFilters();
       },
     };
   }

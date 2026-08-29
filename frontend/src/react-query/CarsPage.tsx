@@ -49,7 +49,7 @@ export function CarsPage() {
         <Title order={3}>Cars</Title>
         <Button
           onClick={() => {
-            return setModalState({ mode: 'create' });
+            setModalState({ mode: 'create' });
           }}
         >
           Add car
@@ -75,7 +75,7 @@ export function CarsPage() {
         order={qs.params.order}
         onSortChange={qs.setSort}
         onEdit={(car) => {
-          return setModalState({ mode: 'edit', car });
+          setModalState({ mode: 'edit', car });
         }}
         onDelete={handleDelete}
       />
@@ -93,7 +93,7 @@ export function CarsPage() {
         mode={modalState?.mode ?? 'create'}
         initialValues={modalState?.car}
         onClose={() => {
-          return setModalState(null);
+          setModalState(null);
         }}
         onSubmit={handleSubmit}
         isSubmitting={isCreating || isUpdating}

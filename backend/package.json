@@ -12,7 +12,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "prisma:seed": "prisma db seed",
-    "lint": "oxlint -c ../.oxlintrc.json ."
+    "lint": "oxlint -c ../.oxlintrc.json . --type-aware"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

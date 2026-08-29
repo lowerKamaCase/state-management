@@ -68,7 +68,7 @@ export function CarsTable({
                   onClick={
                     col.key
                       ? () => {
-                          return handleHeaderClick(col.key as CarSortField);
+                          handleHeaderClick(col.key as CarSortField);
                         }
                       : undefined
                   }
@@ -105,7 +105,7 @@ export function CarsTable({
                     <ActionIcon
                       variant="subtle"
                       onClick={() => {
-                        return onEdit(car);
+                        onEdit(car);
                       }}
                       aria-label="Edit"
                     >
@@ -115,7 +115,7 @@ export function CarsTable({
                       variant="subtle"
                       color="red"
                       onClick={() => {
-                        return onDelete(car);
+                        onDelete(car);
                       }}
                       aria-label="Delete"
                     >
