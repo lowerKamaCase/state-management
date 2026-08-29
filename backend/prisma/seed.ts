@@ -1,4 +1,4 @@
-import { PrismaClient, BodyType } from '@prisma/client';
+import { BodyType, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -45,4 +45,6 @@ main()
     console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(() => {
+    return prisma.$disconnect();
+  });

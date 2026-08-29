@@ -35,7 +35,13 @@ export interface Car {
 export type CarSortField = 'price' | 'year' | 'mileage' | 'createdAt' | 'brand';
 export type SortOrder = 'asc' | 'desc';
 
-export const SORT_FIELDS: CarSortField[] = ['price', 'year', 'mileage', 'createdAt', 'brand'];
+export const SORT_FIELDS: CarSortField[] = [
+  'price',
+  'year',
+  'mileage',
+  'createdAt',
+  'brand',
+];
 
 export interface CarsFilters {
   brand?: string;

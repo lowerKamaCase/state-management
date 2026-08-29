@@ -13,8 +13,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
-import { UpdateCarDto } from './dto/update-car.dto';
 import { QueryCarsDto } from './dto/query-cars.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 
 @ApiTags('cars')
 @Controller('cars')

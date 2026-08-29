@@ -14,13 +14,21 @@ export function TabNav() {
   const current = location.pathname.split('/')[1] || 'effector';
 
   return (
-    <Tabs value={current} onChange={(value) => value && navigate(`/${value}`)} mb="md">
+    <Tabs
+      value={current}
+      onChange={(value) => {
+        return value && navigate(`/${value}`);
+      }}
+      mb="md"
+    >
       <Tabs.List>
-        {TABS.map((tab) => (
-          <Tabs.Tab key={tab.value} value={tab.value}>
-            {tab.label}
-          </Tabs.Tab>
-        ))}
+        {TABS.map((tab) => {
+          return (
+            <Tabs.Tab key={tab.value} value={tab.value}>
+              {tab.label}
+            </Tabs.Tab>
+          );
+        })}
       </Tabs.List>
     </Tabs>
   );

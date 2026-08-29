@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript"],
+  "ignorePatterns": ["**/dist/**", "**/node_modules/**", "**/generated/**"],
+  "rules": {
+    "arrow-body-style": ["error", "always"],
+    "curly": ["error", "all"],
+    "no-var": "error",
+    "no-debugger": "error",
+    "no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "typescript/no-explicit-any": "error",
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}

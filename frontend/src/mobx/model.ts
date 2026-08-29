@@ -1,15 +1,20 @@
-import { makeAutoObservable, runInAction, reaction } from 'mobx';
-import { getCars, createCar, updateCar, deleteCar } from '../shared/api/carsApi';
-import { DEFAULT_QUERY_PARAMS } from '../shared/types/car';
-import type {
-  Car,
-  CarsFilters,
-  CarSortField,
-  SortOrder,
-  CarsQueryParams,
-  PaginatedMeta,
-  CreateCarInput,
-  UpdateCarInput,
+import { makeAutoObservable, reaction, runInAction } from 'mobx';
+import {
+  createCar,
+  deleteCar,
+  getCars,
+  updateCar,
+} from '../shared/api/carsApi';
+import {
+  DEFAULT_QUERY_PARAMS,
+  type Car,
+  type CarsFilters,
+  type CarSortField,
+  type CarsQueryParams,
+  type CreateCarInput,
+  type PaginatedMeta,
+  type SortOrder,
+  type UpdateCarInput,
 } from '../shared/types/car';
 import type { CarsHooksContract } from '../shared/types/hooksContract';
 
@@ -33,7 +38,9 @@ function createCarsModel() {
       // immediately on construction — covers the "mount" case with no
       // useEffect needed anywhere in this module.
       reaction(
-        () => this.params,
+        () => {
+          return this.params;
+        },
         () => {
           void this.fetchCars();
         },
@@ -115,11 +122,21 @@ function createCarsModel() {
   function useCarsQueryState() {
     return {
       params: carsStore.params,
-      setFilters: (patch: Partial<CarsFilters>) => carsStore.setFilters(patch),
-      setSort: (sortBy: CarSortField, order: SortOrder) => carsStore.setSort(sortBy, order),
-      setPage: (page: number) => carsStore.setPage(page),
-      setPageSize: (pageSize: number) => carsStore.setPageSize(pageSize),
-      resetFilters: () => carsStore.resetFilters(),
+      setFilters: (patch: Partial<CarsFilters>) => {
+        return carsStore.setFilters(patch);
+      },
+      setSort: (sortBy: CarSortField, order: SortOrder) => {
+        return carsStore.setSort(sortBy, order);
+      },
+      setPage: (page: number) => {
+        return carsStore.setPage(page);
+      },
+      setPageSize: (pageSize: number) => {
+        return carsStore.setPageSize(pageSize);
+      },
+      resetFilters: () => {
+        return carsStore.resetFilters();
+      },
     };
   }
 
@@ -130,13 +147,17 @@ function createCarsModel() {
       isLoading: carsStore.isLoading,
       isFetching: carsStore.isLoading,
       error: carsStore.error,
-      refetch: () => void carsStore.fetchCars(),
+      refetch: () => {
+        return void carsStore.fetchCars();
+      },
     };
   }
 
   function useCreateCar() {
     return {
-      createCar: (input: CreateCarInput) => carsStore.createCar(input),
+      createCar: (input: CreateCarInput) => {
+        return carsStore.createCar(input);
+      },
       isPending: carsStore.isMutating,
       error: null,
     };
@@ -144,7 +165,9 @@ function createCarsModel() {
 
   function useUpdateCar() {
     return {
-      updateCar: (id: string, input: UpdateCarInput) => carsStore.updateCar(id, input),
+      updateCar: (id: string, input: UpdateCarInput) => {
+        return carsStore.updateCar(id, input);
+      },
       isPending: carsStore.isMutating,
       error: null,
     };
@@ -152,13 +175,21 @@ function createCarsModel() {
 
   function useDeleteCar() {
     return {
-      deleteCar: (id: string) => carsStore.deleteCar(id),
+      deleteCar: (id: string) => {
+        return carsStore.deleteCar(id);
+      },
       isPending: carsStore.isMutating,
       error: null,
     };
   }
 
-  return { useCarsQueryState, useCars, useCreateCar, useUpdateCar, useDeleteCar };
+  return {
+    useCarsQueryState,
+    useCars,
+    useCreateCar,
+    useUpdateCar,
+    useDeleteCar,
+  };
 }
 
 const model = createCarsModel();

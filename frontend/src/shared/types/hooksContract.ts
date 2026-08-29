@@ -6,12 +6,12 @@
  */
 import type {
   Car,
-  CarsQueryParams,
   CarsFilters,
   CarSortField,
-  SortOrder,
-  PaginatedMeta,
+  CarsQueryParams,
   CreateCarInput,
+  PaginatedMeta,
+  SortOrder,
   UpdateCarInput,
 } from './car';
 

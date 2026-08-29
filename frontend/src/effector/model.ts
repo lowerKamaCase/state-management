@@ -1,17 +1,22 @@
-import { useEffect } from 'react';
-import { createStore, createEvent, createEffect, sample } from 'effector';
+import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react';
-import { getCars, createCar, updateCar, deleteCar } from '../shared/api/carsApi';
-import { DEFAULT_QUERY_PARAMS } from '../shared/types/car';
-import type {
-  Car,
-  CarsFilters,
-  CarSortField,
-  SortOrder,
-  CarsQueryParams,
-  PaginatedMeta,
-  CreateCarInput,
-  UpdateCarInput,
+import { useEffect } from 'react';
+import {
+  createCar,
+  deleteCar,
+  getCars,
+  updateCar,
+} from '../shared/api/carsApi';
+import {
+  DEFAULT_QUERY_PARAMS,
+  type Car,
+  type CarsFilters,
+  type CarSortField,
+  type CarsQueryParams,
+  type CreateCarInput,
+  type PaginatedMeta,
+  type SortOrder,
+  type UpdateCarInput,
 } from '../shared/types/car';
 import type { CarsHooksContract } from '../shared/types/hooksContract';
 
@@ -30,23 +35,50 @@ function createCarsModel() {
   const refreshRequested = createEvent();
 
   const fetchCarsFx = createEffect(getCars);
-  const createCarFx = createEffect((input: CreateCarInput) => createCar(input));
-  const updateCarFx = createEffect((p: { id: string; input: UpdateCarInput }) => updateCar(p.id, p.input));
-  const deleteCarFx = createEffect((id: string) => deleteCar(id));
+  const createCarFx = createEffect((input: CreateCarInput) => {
+    return createCar(input);
+  });
+  const updateCarFx = createEffect(
+    (p: { id: string; input: UpdateCarInput }) => {
+      return updateCar(p.id, p.input);
+    },
+  );
+  const deleteCarFx = createEffect((id: string) => {
+    return deleteCar(id);
+  });
 
   const $queryParams = createStore<CarsQueryParams>(DEFAULT_QUERY_PARAMS)
-    .on(filtersChanged, (s, patch) => ({ ...s, ...patch, page: 1 }))
-    .on(sortChanged, (s, { sortBy, order }) => ({ ...s, sortBy, order, page: 1 }))
-    .on(pageChanged, (s, page) => ({ ...s, page }))
-    .on(pageSizeChanged, (s, pageSize) => ({ ...s, pageSize, page: 1 }))
+    .on(filtersChanged, (s, patch) => {
+      return { ...s, ...patch, page: 1 };
+    })
+    .on(sortChanged, (s, { sortBy, order }) => {
+      return { ...s, sortBy, order, page: 1 };
+    })
+    .on(pageChanged, (s, page) => {
+      return { ...s, page };
+    })
+    .on(pageSizeChanged, (s, pageSize) => {
+      return { ...s, pageSize, page: 1 };
+    })
     .reset(filtersReset);
 
-  const $cars = createStore<Car[]>([]).on(fetchCarsFx.doneData, (_, res) => res.data);
-  const $meta = createStore<PaginatedMeta | null>(null).on(fetchCarsFx.doneData, (_, res) => res.meta);
+  const $cars = createStore<Car[]>([]).on(fetchCarsFx.doneData, (_, res) => {
+    return res.data;
+  });
+  const $meta = createStore<PaginatedMeta | null>(null).on(
+    fetchCarsFx.doneData,
+    (_, res) => {
+      return res.meta;
+    },
+  );
   const $isLoading = fetchCarsFx.pending;
   const $listError = createStore<string | null>(null)
-    .on(fetchCarsFx.failData, (_, e) => e.message)
-    .on(fetchCarsFx.done, () => null);
+    .on(fetchCarsFx.failData, (_, e) => {
+      return e.message;
+    })
+    .on(fetchCarsFx.done, () => {
+      return null;
+    });
 
   // Refetch with the latest params after any param change, on mount
   // (via refreshRequested), or after any mutation succeeds.
@@ -67,18 +99,21 @@ function createCarsModel() {
   });
 
   function useCarsQueryState() {
-    const [params, setFilters, setSortRaw, setPage, setPageSize, resetFilters] = useUnit([
-      $queryParams,
-      filtersChanged,
-      sortChanged,
-      pageChanged,
-      pageSizeChanged,
-      filtersReset,
-    ]);
+    const [params, setFilters, setSortRaw, setPage, setPageSize, resetFilters] =
+      useUnit([
+        $queryParams,
+        filtersChanged,
+        sortChanged,
+        pageChanged,
+        pageSizeChanged,
+        filtersReset,
+      ]);
     return {
       params,
       setFilters,
-      setSort: (sortBy: CarSortField, order: SortOrder) => setSortRaw({ sortBy, order }),
+      setSort: (sortBy: CarSortField, order: SortOrder) => {
+        return setSortRaw({ sortBy, order });
+      },
       setPage,
       setPageSize,
       resetFilters,
@@ -96,18 +131,37 @@ function createCarsModel() {
     useEffect(() => {
       refresh();
     }, [refresh]);
-    return { cars, meta: meta ?? undefined, isLoading, isFetching: isLoading, error, refetch: refresh };
+    return {
+      cars,
+      meta: meta ?? undefined,
+      isLoading,
+      isFetching: isLoading,
+      error,
+      refetch: refresh,
+    };
   }
 
   function useCreateCar() {
     const [run, isPending] = useUnit([createCarFx, createCarFx.pending]);
-    return { createCar: (input: CreateCarInput) => run(input).then(() => undefined), isPending, error: null };
+    return {
+      createCar: (input: CreateCarInput) => {
+        return run(input).then(() => {
+          return undefined;
+        });
+      },
+      isPending,
+      error: null,
+    };
   }
 
   function useUpdateCar() {
     const [run, isPending] = useUnit([updateCarFx, updateCarFx.pending]);
     return {
-      updateCar: (id: string, input: UpdateCarInput) => run({ id, input }).then(() => undefined),
+      updateCar: (id: string, input: UpdateCarInput) => {
+        return run({ id, input }).then(() => {
+          return undefined;
+        });
+      },
       isPending,
       error: null,
     };
@@ -115,10 +169,24 @@ function createCarsModel() {
 
   function useDeleteCar() {
     const [run, isPending] = useUnit([deleteCarFx, deleteCarFx.pending]);
-    return { deleteCar: (id: string) => run(id).then(() => undefined), isPending, error: null };
+    return {
+      deleteCar: (id: string) => {
+        return run(id).then(() => {
+          return undefined;
+        });
+      },
+      isPending,
+      error: null,
+    };
   }
 
-  return { useCarsQueryState, useCars, useCreateCar, useUpdateCar, useDeleteCar };
+  return {
+    useCarsQueryState,
+    useCars,
+    useCreateCar,
+    useUpdateCar,
+    useDeleteCar,
+  };
 }
 
 const model = createCarsModel();

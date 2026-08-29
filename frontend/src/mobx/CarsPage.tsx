@@ -1,9 +1,20 @@
-import { useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Alert, Button, Group, Title } from '@mantine/core';
-import { CarsFilters, CarsTable, CarsPagination, CarFormModal } from '../shared/components';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import {
+  CarFormModal,
+  CarsFilters,
+  CarsPagination,
+  CarsTable,
+} from '../shared/components';
 import type { Car, CreateCarInput, UpdateCarInput } from '../shared/types/car';
-import { useCarsQueryState, useCars, useCreateCar, useUpdateCar, useDeleteCar } from './model';
+import {
+  useCars,
+  useCarsQueryState,
+  useCreateCar,
+  useDeleteCar,
+  useUpdateCar,
+} from './model';
 
 interface ModalState {
   mode: 'create' | 'edit';
@@ -42,7 +53,13 @@ export const CarsPage = observer(function CarsPage() {
     <div>
       <Group justify="space-between" mb="md">
         <Title order={3}>Cars</Title>
-        <Button onClick={() => setModalState({ mode: 'create' })}>Add car</Button>
+        <Button
+          onClick={() => {
+            return setModalState({ mode: 'create' });
+          }}
+        >
+          Add car
+        </Button>
       </Group>
 
       {list.error && (
@@ -51,7 +68,11 @@ export const CarsPage = observer(function CarsPage() {
         </Alert>
       )}
 
-      <CarsFilters filters={qs.params} onChange={qs.setFilters} onReset={qs.resetFilters} />
+      <CarsFilters
+        filters={qs.params}
+        onChange={qs.setFilters}
+        onReset={qs.resetFilters}
+      />
 
       <CarsTable
         cars={list.cars}
@@ -59,7 +80,9 @@ export const CarsPage = observer(function CarsPage() {
         sortBy={qs.params.sortBy}
         order={qs.params.order}
         onSortChange={qs.setSort}
-        onEdit={(car) => setModalState({ mode: 'edit', car })}
+        onEdit={(car) => {
+          return setModalState({ mode: 'edit', car });
+        }}
         onDelete={handleDelete}
       />
 
@@ -75,7 +98,9 @@ export const CarsPage = observer(function CarsPage() {
         opened={modalState !== null}
         mode={modalState?.mode ?? 'create'}
         initialValues={modalState?.car}
-        onClose={() => setModalState(null)}
+        onClose={() => {
+          return setModalState(null);
+        }}
         onSubmit={handleSubmit}
         isSubmitting={isCreating || isUpdating}
       />

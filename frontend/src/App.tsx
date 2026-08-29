@@ -1,12 +1,12 @@
-import { MantineProvider, Container } from '@mantine/core';
+import { Container, MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { TabNav } from './shared/components';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CarsPage as EffectorCarsPage } from './effector/CarsPage';
-import { CarsPage as ZustandCarsPage } from './zustand/CarsPage';
 import { CarsPage as MobxCarsPage } from './mobx/CarsPage';
 import { CarsPage as ReactQueryCarsPage } from './react-query/CarsPage';
+import { TabNav } from './shared/components';
+import { CarsPage as ZustandCarsPage } from './zustand/CarsPage';
 
 const queryClient = new QueryClient();
 

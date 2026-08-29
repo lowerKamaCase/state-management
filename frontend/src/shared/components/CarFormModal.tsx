@@ -1,8 +1,21 @@
-import { useEffect, useState } from 'react';
-import { Modal, TextInput, NumberInput, Select, Button, Stack, Alert } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  Modal,
+  NumberInput,
+  Select,
+  Stack,
+  TextInput,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { BODY_TYPES } from '../types/car';
-import type { Car, BodyType, CreateCarInput, UpdateCarInput } from '../types/car';
+import { useEffect, useState } from 'react';
+import {
+  BODY_TYPES,
+  type BodyType,
+  type Car,
+  type CreateCarInput,
+  type UpdateCarInput,
+} from '../types/car';
 
 interface FormValues {
   brand: string;
@@ -33,20 +46,54 @@ interface CarFormModalProps {
   isSubmitting: boolean;
 }
 
-export function CarFormModal({ opened, mode, initialValues, onClose, onSubmit, isSubmitting }: CarFormModalProps) {
+export function CarFormModal({
+  opened,
+  mode,
+  initialValues,
+  onClose,
+  onSubmit,
+  isSubmitting,
+}: CarFormModalProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     initialValues: EMPTY_VALUES,
     validate: {
-      brand: (v) => (v.trim().length === 0 ? 'Required' : v.length > 50 ? 'Max 50 characters' : null),
-      model: (v) => (v.trim().length === 0 ? 'Required' : v.length > 50 ? 'Max 50 characters' : null),
-      color: (v) => (v.trim().length === 0 ? 'Required' : v.length > 30 ? 'Max 30 characters' : null),
-      year: (v) =>
-        v < 1900 || v > new Date().getFullYear() + 1 ? `Must be between 1900 and ${new Date().getFullYear() + 1}` : null,
-      price: (v) => (v < 0 ? 'Must be non-negative' : null),
-      mileage: (v) => (v < 0 ? 'Must be non-negative' : null),
-      bodyType: (v) => (v === '' ? 'Required' : null),
+      brand: (v) => {
+        return v.trim().length === 0
+          ? 'Required'
+          : v.length > 50
+            ? 'Max 50 characters'
+            : null;
+      },
+      model: (v) => {
+        return v.trim().length === 0
+          ? 'Required'
+          : v.length > 50
+            ? 'Max 50 characters'
+            : null;
+      },
+      color: (v) => {
+        return v.trim().length === 0
+          ? 'Required'
+          : v.length > 30
+            ? 'Max 30 characters'
+            : null;
+      },
+      year: (v) => {
+        return v < 1900 || v > new Date().getFullYear() + 1
+          ? `Must be between 1900 and ${new Date().getFullYear() + 1}`
+          : null;
+      },
+      price: (v) => {
+        return v < 0 ? 'Must be non-negative' : null;
+      },
+      mileage: (v) => {
+        return v < 0 ? 'Must be non-negative' : null;
+      },
+      bodyType: (v) => {
+        return v === '' ? 'Required' : null;
+      },
     },
   });
 
@@ -81,7 +128,11 @@ export function CarFormModal({ opened, mode, initialValues, onClose, onSubmit, i
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title={mode === 'create' ? 'Add car' : 'Edit car'}>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={mode === 'create' ? 'Add car' : 'Edit car'}
+    >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="sm">
           {submitError && (
@@ -92,8 +143,17 @@ export function CarFormModal({ opened, mode, initialValues, onClose, onSubmit, i
           <TextInput label="Brand" required {...form.getInputProps('brand')} />
           <TextInput label="Model" required {...form.getInputProps('model')} />
           <NumberInput label="Year" required {...form.getInputProps('year')} />
-          <NumberInput label="Price" required min={0} {...form.getInputProps('price')} />
-          <NumberInput label="Mileage" min={0} {...form.getInputProps('mileage')} />
+          <NumberInput
+            label="Price"
+            required
+            min={0}
+            {...form.getInputProps('price')}
+          />
+          <NumberInput
+            label="Mileage"
+            min={0}
+            {...form.getInputProps('mileage')}
+          />
           <TextInput label="Color" required {...form.getInputProps('color')} />
           <Select
             label="Body type"

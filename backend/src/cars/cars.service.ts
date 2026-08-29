@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCarDto } from './dto/create-car.dto';
-import { UpdateCarDto } from './dto/update-car.dto';
 import { QueryCarsDto } from './dto/query-cars.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 
 @Injectable()
 export class CarsService {
@@ -67,7 +67,9 @@ export class CarsService {
 
   async findOne(id: string) {
     const car = await this.prisma.car.findUnique({ where: { id } });
-    if (!car) throw new NotFoundException(`Car ${id} not found`);
+    if (!car) {
+      throw new NotFoundException(`Car ${id} not found`);
+    }
     return car;
   }
 
