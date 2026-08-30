@@ -1,0 +1,36 @@
+import { makeAutoObservable, runInAction } from 'mobx';
+import { deleteCar } from '../../../../shared/entities/car/api/carsApi';
+import type { DeleteCarContract } from '../../../../shared/features/delete-car/model/contract';
+
+class DeleteCarStore {
+  isPending = false;
+
+  constructor() {
+    makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  async deleteCar(id: string) {
+    this.isPending = true;
+    try {
+      await deleteCar(id);
+    } finally {
+      runInAction(() => {
+        this.isPending = false;
+      });
+    }
+  }
+}
+
+const deleteCarStore = new DeleteCarStore();
+
+export function useDeleteCar() {
+  return {
+    // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
+    deleteCar: deleteCarStore.deleteCar,
+    isPending: deleteCarStore.isPending,
+    error: null,
+  };
+}
+
+const _typecheck: DeleteCarContract = { useDeleteCar };
+void _typecheck;
