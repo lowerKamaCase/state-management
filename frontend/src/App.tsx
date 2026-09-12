@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CarsPage as EffectorDynamicCarsPage } from './effector-dynamic-models/ui/CarsPage';
 import { CarsPage as EffectorCarsPage } from './effector/ui/CarsPage';
+import { EmptyPage } from './empty/EmptyPage';
 import { CarsPage as MobxDynamicCarsPage } from './mobx-dynamic-models/ui/CarsPage';
 import { CarsPage as MobxCarsPage } from './mobx/ui/CarsPage';
 import { CarsPage as ReactQueryCarsPage } from './react-query/ui/CarsPage';
@@ -13,6 +14,8 @@ import { CarsPage as ReatomCarsPage } from './reatom/ui/CarsPage';
 import { CarsPage as RxjsDynamicCarsPage } from './rxjs-dynamic-models/ui/CarsPage';
 import { CarsPage as RxjsCarsPage } from './rxjs/ui/CarsPage';
 import { TabNav } from './TabNav';
+import { CarsPage as XstateDynamicCarsPage } from './xstate-dynamic-models/ui/CarsPage';
+import { CarsPage as XstateCarsPage } from './xstate/ui/CarsPage';
 import { CarsPage as ZustandDynamicCarsPage } from './zustand-dynamic-models/ui/CarsPage';
 import { CarsPage as ZustandCarsPage } from './zustand/ui/CarsPage';
 
@@ -41,6 +44,8 @@ export default function App() {
                 <Route path="/react-query" element={<ReactQueryCarsPage />} />
                 <Route path="/rxjs" element={<RxjsCarsPage />} />
                 <Route path="/reatom" element={<ReatomCarsPage />} />
+                <Route path="/xstate" element={<XstateCarsPage />} />
+                <Route path="/empty" element={<EmptyPage />} />
                 <Route
                   path="/effector-dynamic-models"
                   element={<EffectorDynamicCarsPage />}
@@ -60,6 +65,10 @@ export default function App() {
                 <Route
                   path="/reatom-dynamic-models"
                   element={<ReatomDynamicCarsPage />}
+                />
+                <Route
+                  path="/xstate-dynamic-models"
+                  element={<XstateDynamicCarsPage />}
                 />
                 <Route path="*" element={<Navigate to="/effector" replace />} />
               </Routes>
