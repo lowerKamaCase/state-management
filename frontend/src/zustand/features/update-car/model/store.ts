@@ -5,16 +5,21 @@ import type { UpdateCarContract } from '../../../../shared/features/update-car/m
 
 interface UpdateCarState {
   isPending: boolean;
+  error: string | null;
   updateCar: (payload: { id: string; input: UpdateCarInput }) => Promise<void>;
 }
 
 const useUpdateCarStore = create<UpdateCarState>((set) => {
   return {
     isPending: false,
+    error: null,
     updateCar: async (payload) => {
-      set({ isPending: true });
+      set({ isPending: true, error: null });
       try {
         await updateCar(payload);
+      } catch (e) {
+        set({ error: (e as Error).message });
+        throw e;
       } finally {
         set({ isPending: false });
       }
@@ -29,7 +34,10 @@ export function useUpdateCar() {
   const isPending = useUpdateCarStore((s) => {
     return s.isPending;
   });
-  return { updateCar: updateCarAction, isPending, error: null };
+  const error = useUpdateCarStore((s) => {
+    return s.error;
+  });
+  return { updateCar: updateCarAction, isPending, error };
 }
 
 const _typecheck: UpdateCarContract = { useUpdateCar };

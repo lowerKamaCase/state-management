@@ -4,6 +4,7 @@ import type { DeleteCarContract } from '../../../../shared/features/delete-car/m
 
 class DeleteCarStore {
   isPending = false;
+  error: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -11,8 +12,14 @@ class DeleteCarStore {
 
   async deleteCar(id: string) {
     this.isPending = true;
+    this.error = null;
     try {
       await deleteCar(id);
+    } catch (e) {
+      runInAction(() => {
+        this.error = (e as Error).message;
+      });
+      throw e;
     } finally {
       runInAction(() => {
         this.isPending = false;
@@ -28,7 +35,7 @@ export function useDeleteCar() {
     // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
     deleteCar: deleteCarStore.deleteCar,
     isPending: deleteCarStore.isPending,
-    error: null,
+    error: deleteCarStore.error,
   };
 }
 

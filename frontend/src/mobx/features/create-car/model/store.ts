@@ -5,6 +5,7 @@ import type { CreateCarContract } from '../../../../shared/features/create-car/m
 
 class CreateCarStore {
   isPending = false;
+  error: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -12,8 +13,14 @@ class CreateCarStore {
 
   async createCar(input: CreateCarInput) {
     this.isPending = true;
+    this.error = null;
     try {
       await createCar(input);
+    } catch (e) {
+      runInAction(() => {
+        this.error = (e as Error).message;
+      });
+      throw e;
     } finally {
       runInAction(() => {
         this.isPending = false;
@@ -29,7 +36,7 @@ export function useCreateCar() {
     // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
     createCar: createCarStore.createCar,
     isPending: createCarStore.isPending,
-    error: null,
+    error: createCarStore.error,
   };
 }
 

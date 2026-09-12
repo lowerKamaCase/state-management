@@ -65,8 +65,12 @@ export function CarsPage() {
 
   const handleDelete = async (car: Car) => {
     if (window.confirm(`Delete ${car.brand} ${car.model}?`)) {
-      await deleteCar(car.id);
-      list.refetch();
+      try {
+        await deleteCar(car.id);
+        list.refetch();
+      } catch (e) {
+        window.alert((e as Error).message);
+      }
     }
   };
 

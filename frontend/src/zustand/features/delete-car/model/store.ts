@@ -4,16 +4,21 @@ import type { DeleteCarContract } from '../../../../shared/features/delete-car/m
 
 interface DeleteCarState {
   isPending: boolean;
+  error: string | null;
   deleteCar: (id: string) => Promise<void>;
 }
 
 const useDeleteCarStore = create<DeleteCarState>((set) => {
   return {
     isPending: false,
+    error: null,
     deleteCar: async (id) => {
-      set({ isPending: true });
+      set({ isPending: true, error: null });
       try {
         await deleteCar(id);
+      } catch (e) {
+        set({ error: (e as Error).message });
+        throw e;
       } finally {
         set({ isPending: false });
       }
@@ -28,7 +33,10 @@ export function useDeleteCar() {
   const isPending = useDeleteCarStore((s) => {
     return s.isPending;
   });
-  return { deleteCar: deleteCarAction, isPending, error: null };
+  const error = useDeleteCarStore((s) => {
+    return s.error;
+  });
+  return { deleteCar: deleteCarAction, isPending, error };
 }
 
 const _typecheck: DeleteCarContract = { useDeleteCar };

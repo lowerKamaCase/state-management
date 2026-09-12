@@ -5,6 +5,7 @@ import type { UpdateCarContract } from '../../../../shared/features/update-car/m
 
 class UpdateCarStore {
   isPending = false;
+  error: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -12,8 +13,14 @@ class UpdateCarStore {
 
   async updateCar(payload: { id: string; input: UpdateCarInput }) {
     this.isPending = true;
+    this.error = null;
     try {
       await updateCar(payload);
+    } catch (e) {
+      runInAction(() => {
+        this.error = (e as Error).message;
+      });
+      throw e;
     } finally {
       runInAction(() => {
         this.isPending = false;
@@ -29,7 +36,7 @@ export function useUpdateCar() {
     // oxlint-disable-next-line typescript/unbound-method -- autoBind: true (see constructor)
     updateCar: updateCarStore.updateCar,
     isPending: updateCarStore.isPending,
-    error: null,
+    error: updateCarStore.error,
   };
 }
 

@@ -5,16 +5,21 @@ import type { CreateCarContract } from '../../../../shared/features/create-car/m
 
 interface CreateCarState {
   isPending: boolean;
+  error: string | null;
   createCar: (input: CreateCarInput) => Promise<void>;
 }
 
 const useCreateCarStore = create<CreateCarState>((set) => {
   return {
     isPending: false,
+    error: null,
     createCar: async (input) => {
-      set({ isPending: true });
+      set({ isPending: true, error: null });
       try {
         await createCar(input);
+      } catch (e) {
+        set({ error: (e as Error).message });
+        throw e;
       } finally {
         set({ isPending: false });
       }
@@ -29,7 +34,10 @@ export function useCreateCar() {
   const isPending = useCreateCarStore((s) => {
     return s.isPending;
   });
-  return { createCar: createCarAction, isPending, error: null };
+  const error = useCreateCarStore((s) => {
+    return s.error;
+  });
+  return { createCar: createCarAction, isPending, error };
 }
 
 const _typecheck: CreateCarContract = { useCreateCar };
