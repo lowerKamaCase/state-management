@@ -13,6 +13,9 @@
     "@mantine/core": "^9.5.2",
     "@mantine/form": "^9.5.2",
     "@mantine/hooks": "^9.5.2",
+    "@reatom/async": "^3.16.10",
+    "@reatom/core": "^3.10.3",
+    "@reatom/npm-react": "^3.10.6",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
     "effector": "^23.4.4",
@@ -22,6 +25,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.3",
+    "rxjs": "^7.8.2",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

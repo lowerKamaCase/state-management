@@ -6,9 +6,13 @@ const TABS = [
   { value: 'zustand', label: 'Zustand' },
   { value: 'mobx', label: 'MobX' },
   { value: 'react-query', label: 'React Query' },
+  { value: 'rxjs', label: 'RxJS' },
+  { value: 'reatom', label: 'Reatom' },
   { value: 'effector-dynamic-models', label: 'Effector (dynamic)' },
   { value: 'zustand-dynamic-models', label: 'Zustand (dynamic)' },
   { value: 'mobx-dynamic-models', label: 'MobX (dynamic)' },
+  { value: 'rxjs-dynamic-models', label: 'RxJS (dynamic)' },
+  { value: 'reatom-dynamic-models', label: 'Reatom (dynamic)' },
 ];
 
 export function TabNav() {
