@@ -1,4 +1,3 @@
-import { Tabs } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const TABS = [
@@ -24,24 +23,23 @@ export function TabNav() {
   const current = location.pathname.split('/')[1] || 'effector';
 
   return (
-    <Tabs
-      value={current}
-      onChange={(value) => {
-        if (value) {
-          void navigate(`/${value}`);
-        }
-      }}
-      mb="md"
-    >
-      <Tabs.List>
-        {TABS.map((tab) => {
-          return (
-            <Tabs.Tab key={tab.value} value={tab.value}>
-              {tab.label}
-            </Tabs.Tab>
-          );
-        })}
-      </Tabs.List>
-    </Tabs>
+    <nav className="tabs" role="tablist">
+      {TABS.map((tab) => {
+        return (
+          <button
+            key={tab.value}
+            role="tab"
+            type="button"
+            aria-selected={tab.value === current}
+            className={tab.value === current ? 'tab active' : 'tab'}
+            onClick={() => {
+              void navigate(`/${tab.value}`);
+            }}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
+    </nav>
   );
 }

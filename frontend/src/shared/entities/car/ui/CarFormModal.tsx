@@ -1,13 +1,3 @@
-import {
-  Alert,
-  Button,
-  Modal,
-  NumberInput,
-  Select,
-  Stack,
-  TextInput,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import {
   BODY_TYPES,
@@ -37,6 +27,41 @@ const EMPTY_VALUES: FormValues = {
   bodyType: '',
 };
 
+type FormErrors = Partial<Record<keyof FormValues, string>>;
+
+function validate(values: FormValues): FormErrors {
+  const errors: FormErrors = {};
+  if (values.brand.trim().length === 0) {
+    errors.brand = 'Required';
+  } else if (values.brand.length > 50) {
+    errors.brand = 'Max 50 characters';
+  }
+  if (values.model.trim().length === 0) {
+    errors.model = 'Required';
+  } else if (values.model.length > 50) {
+    errors.model = 'Max 50 characters';
+  }
+  if (values.color.trim().length === 0) {
+    errors.color = 'Required';
+  } else if (values.color.length > 30) {
+    errors.color = 'Max 30 characters';
+  }
+  const maxYear = new Date().getFullYear() + 1;
+  if (values.year < 1900 || values.year > maxYear) {
+    errors.year = `Must be between 1900 and ${maxYear}`;
+  }
+  if (values.price < 0) {
+    errors.price = 'Must be non-negative';
+  }
+  if (values.mileage < 0) {
+    errors.mileage = 'Must be non-negative';
+  }
+  if (values.bodyType === '') {
+    errors.bodyType = 'Required';
+  }
+  return errors;
+}
+
 interface CarFormModalProps {
   opened: boolean;
   mode: 'create' | 'edit';
@@ -54,53 +79,15 @@ export function CarFormModal({
   onSubmit,
   isSubmitting,
 }: CarFormModalProps) {
+  const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
+  const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
-
-  const form = useForm<FormValues>({
-    initialValues: EMPTY_VALUES,
-    validate: {
-      brand: (v) => {
-        return v.trim().length === 0
-          ? 'Required'
-          : v.length > 50
-            ? 'Max 50 characters'
-            : null;
-      },
-      model: (v) => {
-        return v.trim().length === 0
-          ? 'Required'
-          : v.length > 50
-            ? 'Max 50 characters'
-            : null;
-      },
-      color: (v) => {
-        return v.trim().length === 0
-          ? 'Required'
-          : v.length > 30
-            ? 'Max 30 characters'
-            : null;
-      },
-      year: (v) => {
-        return v < 1900 || v > new Date().getFullYear() + 1
-          ? `Must be between 1900 and ${new Date().getFullYear() + 1}`
-          : null;
-      },
-      price: (v) => {
-        return v < 0 ? 'Must be non-negative' : null;
-      },
-      mileage: (v) => {
-        return v < 0 ? 'Must be non-negative' : null;
-      },
-      bodyType: (v) => {
-        return v === '' ? 'Required' : null;
-      },
-    },
-  });
 
   useEffect(() => {
     if (opened) {
       setSubmitError(null);
-      form.setValues(
+      setErrors({});
+      setValues(
         mode === 'edit' && initialValues
           ? {
               brand: initialValues.brand,
@@ -117,7 +104,26 @@ export function CarFormModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened, mode, initialValues]);
 
-  const handleSubmit = async (values: FormValues) => {
+  if (!opened) {
+    return null;
+  }
+
+  const setField = <K extends keyof FormValues>(
+    key: K,
+    value: FormValues[K],
+  ) => {
+    setValues((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const nextErrors = validate(values);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
     setSubmitError(null);
     try {
       await onSubmit({ ...values, bodyType: values.bodyType as BodyType });
@@ -128,44 +134,125 @@ export function CarFormModal({
   };
 
   return (
-    <Modal
-      opened={opened}
-      onClose={onClose}
-      title={mode === 'create' ? 'Add car' : 'Edit car'}
+    <div
+      className="modal-overlay"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack gap="sm">
-          {submitError && (
-            <Alert color="red" title="Error">
-              {submitError}
-            </Alert>
-          )}
-          <TextInput label="Brand" required {...form.getInputProps('brand')} />
-          <TextInput label="Model" required {...form.getInputProps('model')} />
-          <NumberInput label="Year" required {...form.getInputProps('year')} />
-          <NumberInput
-            label="Price"
-            required
-            min={0}
-            {...form.getInputProps('price')}
-          />
-          <NumberInput
-            label="Mileage"
-            min={0}
-            {...form.getInputProps('mileage')}
-          />
-          <TextInput label="Color" required {...form.getInputProps('color')} />
-          <Select
-            label="Body type"
-            required
-            data={BODY_TYPES}
-            {...form.getInputProps('bodyType')}
-          />
-          <Button type="submit" loading={isSubmitting} mt="sm">
-            {mode === 'create' ? 'Create' : 'Save'}
-          </Button>
-        </Stack>
-      </form>
-    </Modal>
+      <div className="modal">
+        <h4 className="modal-title">
+          {mode === 'create' ? 'Add car' : 'Edit car'}
+        </h4>
+        <form onSubmit={handleSubmit}>
+          <div className="stack">
+            {submitError && (
+              <div className="alert">
+                <div className="alert-title">Error</div>
+                {submitError}
+              </div>
+            )}
+            <div className="field">
+              <label>Brand *</label>
+              <input
+                value={values.brand}
+                onChange={(e) => {
+                  setField('brand', e.currentTarget.value);
+                }}
+              />
+              {errors.brand && <span className="error">{errors.brand}</span>}
+            </div>
+            <div className="field">
+              <label>Model *</label>
+              <input
+                value={values.model}
+                onChange={(e) => {
+                  setField('model', e.currentTarget.value);
+                }}
+              />
+              {errors.model && <span className="error">{errors.model}</span>}
+            </div>
+            <div className="field">
+              <label>Year *</label>
+              <input
+                type="number"
+                value={values.year}
+                onChange={(e) => {
+                  setField('year', Number(e.currentTarget.value));
+                }}
+              />
+              {errors.year && <span className="error">{errors.year}</span>}
+            </div>
+            <div className="field">
+              <label>Price *</label>
+              <input
+                type="number"
+                min={0}
+                value={values.price}
+                onChange={(e) => {
+                  setField('price', Number(e.currentTarget.value));
+                }}
+              />
+              {errors.price && <span className="error">{errors.price}</span>}
+            </div>
+            <div className="field">
+              <label>Mileage</label>
+              <input
+                type="number"
+                min={0}
+                value={values.mileage}
+                onChange={(e) => {
+                  setField('mileage', Number(e.currentTarget.value));
+                }}
+              />
+              {errors.mileage && (
+                <span className="error">{errors.mileage}</span>
+              )}
+            </div>
+            <div className="field">
+              <label>Color *</label>
+              <input
+                value={values.color}
+                onChange={(e) => {
+                  setField('color', e.currentTarget.value);
+                }}
+              />
+              {errors.color && <span className="error">{errors.color}</span>}
+            </div>
+            <div className="field">
+              <label>Body type *</label>
+              <select
+                value={values.bodyType}
+                onChange={(e) => {
+                  setField('bodyType', e.currentTarget.value as BodyType | '');
+                }}
+              >
+                <option value="">Select…</option>
+                {BODY_TYPES.map((t) => {
+                  return (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  );
+                })}
+              </select>
+              {errors.bodyType && (
+                <span className="error">{errors.bodyType}</span>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="btn"
+              disabled={isSubmitting}
+              style={{ marginTop: 8 }}
+            >
+              {isSubmitting ? 'Saving…' : mode === 'create' ? 'Create' : 'Save'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

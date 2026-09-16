@@ -1,7 +1,5 @@
-import { Container, MantineProvider } from '@mantine/core';
 import { reatomContext, useCreateCtx } from '@reatom/npm-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CarsPage as EffectorDynamicCarsPage } from './effector-dynamic-models/ui/CarsPage';
 import { CarsPage as EffectorCarsPage } from './effector/ui/CarsPage';
@@ -31,52 +29,49 @@ export default function App() {
 
   return (
     <reatomContext.Provider value={reatomCtx}>
-      <MantineProvider defaultColorScheme="light">
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <Container size="lg" py="md">
-              <TabNav />
-              <Routes>
-                <Route path="/" element={<Navigate to="/effector" replace />} />
-                <Route path="/effector" element={<EffectorCarsPage />} />
-                <Route path="/zustand" element={<ZustandCarsPage />} />
-                <Route path="/mobx" element={<MobxCarsPage />} />
-                <Route path="/react-query" element={<ReactQueryCarsPage />} />
-                <Route path="/rxjs" element={<RxjsCarsPage />} />
-                <Route path="/reatom" element={<ReatomCarsPage />} />
-                <Route path="/xstate" element={<XstateCarsPage />} />
-                <Route path="/empty" element={<EmptyPage />} />
-                <Route
-                  path="/effector-dynamic-models"
-                  element={<EffectorDynamicCarsPage />}
-                />
-                <Route
-                  path="/zustand-dynamic-models"
-                  element={<ZustandDynamicCarsPage />}
-                />
-                <Route
-                  path="/mobx-dynamic-models"
-                  element={<MobxDynamicCarsPage />}
-                />
-                <Route
-                  path="/rxjs-dynamic-models"
-                  element={<RxjsDynamicCarsPage />}
-                />
-                <Route
-                  path="/reatom-dynamic-models"
-                  element={<ReatomDynamicCarsPage />}
-                />
-                <Route
-                  path="/xstate-dynamic-models"
-                  element={<XstateDynamicCarsPage />}
-                />
-                <Route path="*" element={<Navigate to="/effector" replace />} />
-              </Routes>
-            </Container>
-          </BrowserRouter>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <div className="container">
+            <TabNav />
+            <Routes>
+              <Route path="/" element={<Navigate to="/effector" replace />} />
+              <Route path="/effector" element={<EffectorCarsPage />} />
+              <Route path="/zustand" element={<ZustandCarsPage />} />
+              <Route path="/mobx" element={<MobxCarsPage />} />
+              <Route path="/react-query" element={<ReactQueryCarsPage />} />
+              <Route path="/rxjs" element={<RxjsCarsPage />} />
+              <Route path="/reatom" element={<ReatomCarsPage />} />
+              <Route path="/xstate" element={<XstateCarsPage />} />
+              <Route path="/empty" element={<EmptyPage />} />
+              <Route
+                path="/effector-dynamic-models"
+                element={<EffectorDynamicCarsPage />}
+              />
+              <Route
+                path="/zustand-dynamic-models"
+                element={<ZustandDynamicCarsPage />}
+              />
+              <Route
+                path="/mobx-dynamic-models"
+                element={<MobxDynamicCarsPage />}
+              />
+              <Route
+                path="/rxjs-dynamic-models"
+                element={<RxjsDynamicCarsPage />}
+              />
+              <Route
+                path="/reatom-dynamic-models"
+                element={<ReatomDynamicCarsPage />}
+              />
+              <Route
+                path="/xstate-dynamic-models"
+                element={<XstateDynamicCarsPage />}
+              />
+              <Route path="*" element={<Navigate to="/effector" replace />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </QueryClientProvider>
     </reatomContext.Provider>
   );
 }

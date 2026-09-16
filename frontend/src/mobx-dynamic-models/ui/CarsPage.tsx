@@ -1,4 +1,3 @@
-import { Alert, Button, Group, Title } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import type {
@@ -82,22 +81,20 @@ export const CarsPage = observer(function () {
 
   return (
     <div>
-      <Group justify="space-between" mb="md">
-        <Title order={3}>Cars</Title>
-        <Button
+      <div className="group-between">
+        <h3 className="page-title">Cars</h3>
+        <button
+          type="button"
+          className="btn"
           onClick={() => {
             setModalState({ mode: 'create' });
           }}
         >
           Add car
-        </Button>
-      </Group>
+        </button>
+      </div>
 
-      {list.error && (
-        <Alert color="red" mb="md">
-          {list.error}
-        </Alert>
-      )}
+      {list.error && <div className="alert alert-mb">{list.error}</div>}
 
       <CarsFilters
         filters={filters}

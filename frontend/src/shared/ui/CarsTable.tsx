@@ -1,11 +1,3 @@
-import {
-  ActionIcon,
-  Box,
-  Group,
-  LoadingOverlay,
-  Table,
-  Text,
-} from '@mantine/core';
 import type { Car, CarSortField, SortOrder } from '../entities/car/model/types';
 
 interface Column {
@@ -52,19 +44,16 @@ export function CarsTable({
   };
 
   return (
-    <Box pos="relative" mih={200}>
-      <LoadingOverlay
-        visible={isLoading}
-        zIndex={10}
-        overlayProps={{ radius: 'sm', blur: 1 }}
-      />
-      <Table striped highlightOnHover withTableBorder>
-        <Table.Thead>
-          <Table.Tr>
+    <div className="table-wrap">
+      {isLoading && <div className="loading-overlay">Loading…</div>}
+      <table className="cars-table">
+        <thead>
+          <tr>
             {COLUMNS.map((col) => {
               return (
-                <Table.Th
+                <th
                   key={col.label}
+                  className={col.key ? 'sortable' : undefined}
                   onClick={
                     col.key
                       ? () => {
@@ -72,67 +61,59 @@ export function CarsTable({
                         }
                       : undefined
                   }
-                  style={
-                    col.key
-                      ? { cursor: 'pointer', userSelect: 'none' }
-                      : undefined
-                  }
                 >
                   {col.label}
                   {col.key === sortBy ? (order === 'asc' ? ' ↑' : ' ↓') : ''}
-                </Table.Th>
+                </th>
               );
             })}
-            <Table.Th>Actions</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
           {cars.map((car) => {
             return (
-              <Table.Tr key={car.id}>
-                <Table.Td>{car.brand}</Table.Td>
-                <Table.Td>{car.model}</Table.Td>
-                <Table.Td>{car.year}</Table.Td>
-                <Table.Td>${car.price.toLocaleString()}</Table.Td>
-                <Table.Td>{car.mileage.toLocaleString()}</Table.Td>
-                <Table.Td>{car.color}</Table.Td>
-                <Table.Td>{car.bodyType}</Table.Td>
-                <Table.Td>
-                  {new Date(car.createdAt).toLocaleDateString()}
-                </Table.Td>
-                <Table.Td>
-                  <Group gap="xs">
-                    <ActionIcon
-                      variant="subtle"
+              <tr key={car.id}>
+                <td>{car.brand}</td>
+                <td>{car.model}</td>
+                <td>{car.year}</td>
+                <td>${car.price.toLocaleString()}</td>
+                <td>{car.mileage.toLocaleString()}</td>
+                <td>{car.color}</td>
+                <td>{car.bodyType}</td>
+                <td>{new Date(car.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <div className="group">
+                    <button
+                      type="button"
+                      className="btn-icon"
                       onClick={() => {
                         onEdit(car);
                       }}
                       aria-label="Edit"
                     >
                       ✎
-                    </ActionIcon>
-                    <ActionIcon
-                      variant="subtle"
-                      color="red"
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-icon btn-icon-danger"
                       onClick={() => {
                         onDelete(car);
                       }}
                       aria-label="Delete"
                     >
                       ✕
-                    </ActionIcon>
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
+                    </button>
+                  </div>
+                </td>
+              </tr>
             );
           })}
-        </Table.Tbody>
-      </Table>
+        </tbody>
+      </table>
       {!isLoading && cars.length === 0 && (
-        <Text ta="center" c="dimmed" py="lg">
-          No cars found
-        </Text>
+        <p className="empty-text">No cars found</p>
       )}
-    </Box>
+    </div>
   );
 }

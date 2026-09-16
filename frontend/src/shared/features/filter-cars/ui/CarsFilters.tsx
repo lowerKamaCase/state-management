@@ -1,11 +1,10 @@
-import { Button, Group, NumberInput, Select, TextInput } from '@mantine/core';
-import { useDebouncedValue } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import {
   BODY_TYPES,
   type BodyType,
   type CarsFilters as CarsFiltersType,
 } from '../../../entities/car/model/types';
+import { useDebouncedValue } from '../../../hooks/useDebouncedValue';
 
 interface CarsFiltersProps {
   filters: CarsFiltersType;
@@ -51,86 +50,102 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
   };
 
   return (
-    <Group gap="sm" wrap="wrap" align="flex-end" mb="md">
-      <TextInput
-        label="Brand"
-        value={brand}
-        onChange={(e) => {
-          setBrand(e.currentTarget.value);
-        }}
-        w={140}
-      />
-      <TextInput
-        label="Color"
-        value={color}
-        onChange={(e) => {
-          setColor(e.currentTarget.value);
-        }}
-        w={120}
-      />
-      <TextInput
-        label="Search"
-        placeholder="brand or model"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.currentTarget.value);
-        }}
-        w={160}
-      />
-      <Select
-        label="Body type"
-        placeholder="All"
-        clearable
-        data={BODY_TYPES}
-        value={filters.bodyType ?? null}
-        onChange={(value) => {
-          onChange({ bodyType: (value as BodyType) || undefined });
-        }}
-        w={140}
-      />
-      <NumberInput
-        label="Min year"
-        value={filters.minYear ?? ''}
-        onChange={(value) => {
-          onChange({
-            minYear: value === '' ? undefined : Number(value),
-          });
-        }}
-        w={100}
-      />
-      <NumberInput
-        label="Max year"
-        value={filters.maxYear ?? ''}
-        onChange={(value) => {
-          onChange({
-            maxYear: value === '' ? undefined : Number(value),
-          });
-        }}
-        w={100}
-      />
-      <NumberInput
-        label="Min price"
-        value={filters.minPrice ?? ''}
-        onChange={(value) => {
-          onChange({
-            minPrice: value === '' ? undefined : Number(value),
-          });
-        }}
-        w={110}
-      />
-      <NumberInput
-        label="Max price"
-        value={filters.maxPrice ?? ''}
-        onChange={(value) => {
-          onChange({
-            maxPrice: value === '' ? undefined : Number(value),
-          });
-        }}
-        w={110}
-      />
-      <Button variant="default" onClick={handleReset}>
+    <div className="group" style={{ marginBottom: 16 }}>
+      <div className="field" style={{ width: 140 }}>
+        <label>Brand</label>
+        <input
+          value={brand}
+          onChange={(e) => {
+            setBrand(e.currentTarget.value);
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 120 }}>
+        <label>Color</label>
+        <input
+          value={color}
+          onChange={(e) => {
+            setColor(e.currentTarget.value);
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 160 }}>
+        <label>Search</label>
+        <input
+          placeholder="brand or model"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.currentTarget.value);
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 140 }}>
+        <label>Body type</label>
+        <select
+          value={filters.bodyType ?? ''}
+          onChange={(e) => {
+            onChange({
+              bodyType: (e.currentTarget.value as BodyType) || undefined,
+            });
+          }}
+        >
+          <option value="">All</option>
+          {BODY_TYPES.map((t) => {
+            return (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div className="field" style={{ width: 100 }}>
+        <label>Min year</label>
+        <input
+          type="number"
+          value={filters.minYear ?? ''}
+          onChange={(e) => {
+            const v = e.currentTarget.value;
+            onChange({ minYear: v === '' ? undefined : Number(v) });
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 100 }}>
+        <label>Max year</label>
+        <input
+          type="number"
+          value={filters.maxYear ?? ''}
+          onChange={(e) => {
+            const v = e.currentTarget.value;
+            onChange({ maxYear: v === '' ? undefined : Number(v) });
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 110 }}>
+        <label>Min price</label>
+        <input
+          type="number"
+          value={filters.minPrice ?? ''}
+          onChange={(e) => {
+            const v = e.currentTarget.value;
+            onChange({ minPrice: v === '' ? undefined : Number(v) });
+          }}
+        />
+      </div>
+      <div className="field" style={{ width: 110 }}>
+        <label>Max price</label>
+        <input
+          type="number"
+          value={filters.maxPrice ?? ''}
+          onChange={(e) => {
+            const v = e.currentTarget.value;
+            onChange({ maxPrice: v === '' ? undefined : Number(v) });
+          }}
+        />
+      </div>
+      <button type="button" className="btn btn-default" onClick={handleReset}>
         Reset
-      </Button>
-    </Group>
+      </button>
+    </div>
   );
 }
