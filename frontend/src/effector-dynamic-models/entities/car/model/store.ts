@@ -17,9 +17,66 @@ import type {
  * the same page never share state. effector doesn't care where a unit was
  * created; useUnit subscribes to whatever store/event reference it's given.
  */
+// TEMP LEAK PROBE — not for commit. Registers each individual effector
+// unit (event/store/effect — not just the wrapper object returned to the
+// caller) in a FinalizationRegistry, so we can tell whether the *actual*
+// reactive-graph nodes get garbage-collected, as opposed to merely the
+// plain object grouping them. If effector's kernel kept some internal
+// registry referencing units directly, the wrapper could die while the
+// units themselves lived on forever — this would miss that case, whereas
+// tracking every unit closes that gap. A plain-object control with the
+// same useMemo lifetime is also tracked, to prove the harness itself
+// (fiber teardown + GC + FinalizationRegistry) reliably reclaims things.
+declare global {
+  interface Window {
+    __leakProbe?: {
+      unitCreated: number;
+      unitFinalized: number;
+      byLabel: Record<string, { created: number; finalized: number }>;
+      controlCreated: number;
+      controlFinalized: number;
+    };
+  }
+}
+
+function getLeakProbe() {
+  window.__leakProbe ??= {
+    unitCreated: 0,
+    unitFinalized: 0,
+    byLabel: {},
+    controlCreated: 0,
+    controlFinalized: 0,
+  };
+  return window.__leakProbe;
+}
+
+const unitRegistry = new FinalizationRegistry<string>((label) => {
+  const probe = getLeakProbe();
+  probe.unitFinalized++;
+  const kind = label.split('#')[0];
+  (probe.byLabel[kind] ??= { created: 0, finalized: 0 }).finalized++;
+  console.log(`[leak-probe] unit ${label} finalized`);
+});
+
+function registerUnit(unit: object, kind: string) {
+  const probe = getLeakProbe();
+  probe.unitCreated++;
+  (probe.byLabel[kind] ??= { created: 0, finalized: 0 }).created++;
+  const label = `${kind}#${probe.unitCreated}`;
+  unitRegistry.register(unit, label);
+  console.log(`[leak-probe] unit ${label} created`);
+}
+
+const controlRegistry = new FinalizationRegistry<number>((id) => {
+  getLeakProbe().controlFinalized++;
+  console.log(`[leak-probe] control object #${id} finalized`);
+});
+
 function createCarsListModel() {
   const paramsChanged = createEvent<CarsQueryParams>();
+  registerUnit(paramsChanged, 'paramsChanged');
   const refreshRequested = createEvent();
+  registerUnit(refreshRequested, 'refreshRequested');
 
   const $params = createStore<CarsQueryParams | null>(null).on(
     paramsChanged,
@@ -27,8 +84,10 @@ function createCarsListModel() {
       return params;
     },
   );
+  registerUnit($params, '$params');
 
   const fetchCarsFx = createEffect(getCars);
+  registerUnit(fetchCarsFx, 'fetchCarsFx');
 
   sample({
     clock: [paramsChanged, refreshRequested],
@@ -42,13 +101,16 @@ function createCarsListModel() {
   const $cars = createStore<Car[]>([]).on(fetchCarsFx.doneData, (_, res) => {
     return res.data;
   });
+  registerUnit($cars, '$cars');
   const $meta = createStore<PaginatedMeta | null>(null).on(
     fetchCarsFx.doneData,
     (_, res) => {
       return res.meta;
     },
   );
+  registerUnit($meta, '$meta');
   const $isLoading = fetchCarsFx.pending;
+  registerUnit($isLoading, '$isLoading');
   const $listError = createStore<string | null>(null)
     .on(fetchCarsFx.failData, (_, e) => {
       return e.message;
@@ -56,6 +118,7 @@ function createCarsListModel() {
     .on(fetchCarsFx.done, () => {
       return null;
     });
+  registerUnit($listError, '$listError');
 
   return {
     paramsChanged,
@@ -71,6 +134,20 @@ export function useCarsList(params: CarsQueryParams) {
   const model = useMemo(() => {
     return createCarsListModel();
   }, []);
+
+  // Same useMemo lifetime as `model` above (created on mount, held until
+  // unmount), but a plain object with zero effector wiring — proves the
+  // harness itself (fiber teardown + GC + FinalizationRegistry, in this
+  // exact browser/headless setup) actually reclaims objects that live as
+  // long as `model` does, when nothing external retains them.
+  useMemo(() => {
+    const control = { tag: 'control' };
+    const probe = getLeakProbe();
+    probe.controlCreated++;
+    controlRegistry.register(control, probe.controlCreated);
+    return control;
+  }, []);
+
   const [cars, meta, isLoading, error] = useUnit([
     model.$cars,
     model.$meta,
