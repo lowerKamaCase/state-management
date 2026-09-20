@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import {
   BODY_TYPES,
   type BodyType,
@@ -13,6 +13,11 @@ interface CarsFiltersProps {
 }
 
 export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
+  const uid = useId();
+  const fieldId = (name: string) => {
+    return `${uid}-${name}`;
+  };
+
   const [brand, setBrand] = useState(filters.brand ?? '');
   const [color, setColor] = useState(filters.color ?? '');
   const [search, setSearch] = useState(filters.search ?? '');
@@ -52,8 +57,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
   return (
     <div className="group" style={{ marginBottom: 16 }}>
       <div className="field" style={{ width: 140 }}>
-        <label>Brand</label>
+        <label htmlFor={fieldId('brand')}>Brand</label>
         <input
+          id={fieldId('brand')}
           value={brand}
           onChange={(e) => {
             setBrand(e.currentTarget.value);
@@ -61,8 +67,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 120 }}>
-        <label>Color</label>
+        <label htmlFor={fieldId('color')}>Color</label>
         <input
+          id={fieldId('color')}
           value={color}
           onChange={(e) => {
             setColor(e.currentTarget.value);
@@ -70,8 +77,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 160 }}>
-        <label>Search</label>
+        <label htmlFor={fieldId('search')}>Search</label>
         <input
+          id={fieldId('search')}
           placeholder="brand or model"
           value={search}
           onChange={(e) => {
@@ -80,8 +88,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 140 }}>
-        <label>Body type</label>
+        <label htmlFor={fieldId('bodyType')}>Body type</label>
         <select
+          id={fieldId('bodyType')}
           value={filters.bodyType ?? ''}
           onChange={(e) => {
             onChange({
@@ -100,8 +109,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         </select>
       </div>
       <div className="field" style={{ width: 100 }}>
-        <label>Min year</label>
+        <label htmlFor={fieldId('minYear')}>Min year</label>
         <input
+          id={fieldId('minYear')}
           type="number"
           value={filters.minYear ?? ''}
           onChange={(e) => {
@@ -111,8 +121,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 100 }}>
-        <label>Max year</label>
+        <label htmlFor={fieldId('maxYear')}>Max year</label>
         <input
+          id={fieldId('maxYear')}
           type="number"
           value={filters.maxYear ?? ''}
           onChange={(e) => {
@@ -122,8 +133,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 110 }}>
-        <label>Min price</label>
+        <label htmlFor={fieldId('minPrice')}>Min price</label>
         <input
+          id={fieldId('minPrice')}
           type="number"
           value={filters.minPrice ?? ''}
           onChange={(e) => {
@@ -133,8 +145,9 @@ export function CarsFilters({ filters, onChange, onReset }: CarsFiltersProps) {
         />
       </div>
       <div className="field" style={{ width: 110 }}>
-        <label>Max price</label>
+        <label htmlFor={fieldId('maxPrice')}>Max price</label>
         <input
+          id={fieldId('maxPrice')}
           type="number"
           value={filters.maxPrice ?? ''}
           onChange={(e) => {

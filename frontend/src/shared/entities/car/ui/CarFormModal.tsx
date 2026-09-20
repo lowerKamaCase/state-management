@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import {
   BODY_TYPES,
   type BodyType,
@@ -79,6 +79,10 @@ export function CarFormModal({
   onSubmit,
   isSubmitting,
 }: CarFormModalProps) {
+  const uid = useId();
+  const fieldId = (name: string) => {
+    return `${uid}-${name}`;
+  };
   const [values, setValues] = useState<FormValues>(EMPTY_VALUES);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -142,8 +146,13 @@ export function CarFormModal({
         }
       }}
     >
-      <div className="modal">
-        <h4 className="modal-title">
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={fieldId('title')}
+      >
+        <h4 className="modal-title" id={fieldId('title')}>
           {mode === 'create' ? 'Add car' : 'Edit car'}
         </h4>
         <form onSubmit={handleSubmit}>
@@ -155,8 +164,9 @@ export function CarFormModal({
               </div>
             )}
             <div className="field">
-              <label>Brand *</label>
+              <label htmlFor={fieldId('brand')}>Brand *</label>
               <input
+                id={fieldId('brand')}
                 value={values.brand}
                 onChange={(e) => {
                   setField('brand', e.currentTarget.value);
@@ -165,8 +175,9 @@ export function CarFormModal({
               {errors.brand && <span className="error">{errors.brand}</span>}
             </div>
             <div className="field">
-              <label>Model *</label>
+              <label htmlFor={fieldId('model')}>Model *</label>
               <input
+                id={fieldId('model')}
                 value={values.model}
                 onChange={(e) => {
                   setField('model', e.currentTarget.value);
@@ -175,8 +186,9 @@ export function CarFormModal({
               {errors.model && <span className="error">{errors.model}</span>}
             </div>
             <div className="field">
-              <label>Year *</label>
+              <label htmlFor={fieldId('year')}>Year *</label>
               <input
+                id={fieldId('year')}
                 type="number"
                 value={values.year}
                 onChange={(e) => {
@@ -186,8 +198,9 @@ export function CarFormModal({
               {errors.year && <span className="error">{errors.year}</span>}
             </div>
             <div className="field">
-              <label>Price *</label>
+              <label htmlFor={fieldId('price')}>Price *</label>
               <input
+                id={fieldId('price')}
                 type="number"
                 min={0}
                 value={values.price}
@@ -198,8 +211,9 @@ export function CarFormModal({
               {errors.price && <span className="error">{errors.price}</span>}
             </div>
             <div className="field">
-              <label>Mileage</label>
+              <label htmlFor={fieldId('mileage')}>Mileage</label>
               <input
+                id={fieldId('mileage')}
                 type="number"
                 min={0}
                 value={values.mileage}
@@ -212,8 +226,9 @@ export function CarFormModal({
               )}
             </div>
             <div className="field">
-              <label>Color *</label>
+              <label htmlFor={fieldId('color')}>Color *</label>
               <input
+                id={fieldId('color')}
                 value={values.color}
                 onChange={(e) => {
                   setField('color', e.currentTarget.value);
@@ -222,8 +237,9 @@ export function CarFormModal({
               {errors.color && <span className="error">{errors.color}</span>}
             </div>
             <div className="field">
-              <label>Body type *</label>
+              <label htmlFor={fieldId('bodyType')}>Body type *</label>
               <select
+                id={fieldId('bodyType')}
                 value={values.bodyType}
                 onChange={(e) => {
                   setField('bodyType', e.currentTarget.value as BodyType | '');

@@ -62,6 +62,7 @@ export function CarsPagination({
       </div>
       <div className="field" style={{ width: 100 }}>
         <select
+          aria-label="Page size"
           value={pageSize}
           onChange={(e) => {
             onPageSizeChange(Number(e.currentTarget.value));
