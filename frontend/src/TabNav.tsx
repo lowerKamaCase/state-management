@@ -9,12 +9,14 @@ const TABS = [
   { value: 'rxjs', label: 'RxJS' },
   { value: 'reatom', label: 'Reatom' },
   { value: 'xstate', label: 'XState' },
+  { value: 'jotai', label: 'Jotai' },
   { value: 'effector-dynamic-models', label: 'Effector (dynamic)' },
   { value: 'zustand-dynamic-models', label: 'Zustand (dynamic)' },
   { value: 'mobx-dynamic-models', label: 'MobX (dynamic)' },
   { value: 'rxjs-dynamic-models', label: 'RxJS (dynamic)' },
   { value: 'reatom-dynamic-models', label: 'Reatom (dynamic)' },
   { value: 'xstate-dynamic-models', label: 'XState (dynamic)' },
+  { value: 'jotai-dynamic-models', label: 'Jotai (dynamic)' },
 ];
 
 export function TabNav() {

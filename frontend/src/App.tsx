@@ -4,6 +4,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CarsPage as EffectorDynamicCarsPage } from './effector-dynamic-models/ui/CarsPage';
 import { CarsPage as EffectorCarsPage } from './effector/ui/CarsPage';
 import { EmptyPage } from './empty/EmptyPage';
+import { CarsPage as JotaiDynamicCarsPage } from './jotai-dynamic-models/ui/CarsPage';
+import { CarsPage as JotaiCarsPage } from './jotai/ui/CarsPage';
 import { CarsPage as MobxDynamicCarsPage } from './mobx-dynamic-models/ui/CarsPage';
 import { CarsPage as MobxCarsPage } from './mobx/ui/CarsPage';
 import { CarsPage as ReactQueryCarsPage } from './react-query/ui/CarsPage';
@@ -42,6 +44,7 @@ export default function App() {
               <Route path="/rxjs" element={<RxjsCarsPage />} />
               <Route path="/reatom" element={<ReatomCarsPage />} />
               <Route path="/xstate" element={<XstateCarsPage />} />
+              <Route path="/jotai" element={<JotaiCarsPage />} />
               <Route path="/empty" element={<EmptyPage />} />
               <Route
                 path="/effector-dynamic-models"
@@ -66,6 +69,10 @@ export default function App() {
               <Route
                 path="/xstate-dynamic-models"
                 element={<XstateDynamicCarsPage />}
+              />
+              <Route
+                path="/jotai-dynamic-models"
+                element={<JotaiDynamicCarsPage />}
               />
               <Route path="*" element={<Navigate to="/effector" replace />} />
             </Routes>
