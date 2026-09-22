@@ -2,11 +2,13 @@ import { reatomContext, useCreateCtx } from '@reatom/npm-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CarsPage as EffectorDynamicCarsPage } from './effector-dynamic-models/ui/CarsPage';
+import { CarsPage as EffectorPageModelCarsPage } from './effector-page-model/ui/CarsPage';
 import { CarsPage as EffectorCarsPage } from './effector/ui/CarsPage';
 import { EmptyPage } from './empty/EmptyPage';
 import { CarsPage as JotaiDynamicCarsPage } from './jotai-dynamic-models/ui/CarsPage';
 import { CarsPage as JotaiCarsPage } from './jotai/ui/CarsPage';
 import { CarsPage as MobxDynamicCarsPage } from './mobx-dynamic-models/ui/CarsPage';
+import { CarsPage as MobxPageModelCarsPage } from './mobx-page-model/ui/CarsPage';
 import { CarsPage as MobxCarsPage } from './mobx/ui/CarsPage';
 import { CarsPage as ReactQueryCarsPage } from './react-query/ui/CarsPage';
 import { CarsPage as ReatomDynamicCarsPage } from './reatom-dynamic-models/ui/CarsPage';
@@ -73,6 +75,14 @@ export default function App() {
               <Route
                 path="/jotai-dynamic-models"
                 element={<JotaiDynamicCarsPage />}
+              />
+              <Route
+                path="/effector-page-model"
+                element={<EffectorPageModelCarsPage />}
+              />
+              <Route
+                path="/mobx-page-model"
+                element={<MobxPageModelCarsPage />}
               />
               <Route path="*" element={<Navigate to="/effector" replace />} />
             </Routes>

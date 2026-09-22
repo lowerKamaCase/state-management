@@ -17,6 +17,8 @@ const TABS = [
   { value: 'reatom-dynamic-models', label: 'Reatom (dynamic)' },
   { value: 'xstate-dynamic-models', label: 'XState (dynamic)' },
   { value: 'jotai-dynamic-models', label: 'Jotai (dynamic)' },
+  { value: 'effector-page-model', label: 'Effector (page model)' },
+  { value: 'mobx-page-model', label: 'MobX (page model)' },
 ];
 
 export function TabNav() {
