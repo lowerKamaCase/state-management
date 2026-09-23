@@ -1,9 +1,3 @@
-databases:
-  - name: tables-backend-db
-    plan: free
-    databaseName: cars
-    user: cars_app
-
 services:
   - type: web
     name: tables-backend
@@ -13,10 +7,15 @@ services:
     buildCommand: npm install --include=dev && npx prisma generate && npm run build
     startCommand: npx prisma migrate deploy && node dist/main.js
     envVars:
+      # Set manually in the Render dashboard (Environment tab) — Neon
+      # pooled connection string (has "-pooler" in the hostname).
       - key: DATABASE_URL
-        fromDatabase:
-          name: tables-backend-db
-          property: connectionString
+        sync: false
+      # Neon direct/unpooled connection string — prisma migrate deploy
+      # needs this specifically (advisory locks break over pgbouncer's
+      # transaction-mode pooling).
+      - key: DIRECT_URL
+        sync: false
       - key: PORT
         value: 3000
       - key: CORS_ORIGINS
