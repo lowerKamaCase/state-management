@@ -1,0 +1,38 @@
+{
+  "skill_name": "react-state-architecture",
+  "evals": [
+    {
+      "id": 0,
+      "name": "zustand-export-coupling",
+      "prompt": "In this repo's frontend (frontend/src/zustand/), there's a Cars table fed by a Zustand store. Add a new 'Export to CSV' feature: a button in the table header that calls the backend export endpoint (assume POST /api/cars/export exists and returns a CSV blob) and, once the export succeeds, should refresh/refetch the cars list below it. Implement whatever files you think are needed and wire it into frontend/src/zustand/ui/CarsPage.tsx. Keep it small - this is a demo project, don't over-engineer. At the end, list every file you created or changed and explain in 1-2 sentences how the 'export succeeded -> refresh the cars list' connection is implemented.",
+      "expected_output": "The export feature's own store/model never imports the cars list store/model directly. The 'refresh after export' wiring happens in CarsPage.tsx (or another component) via a callback/prop, not inside a model file. Any new model file exports only a hook, never the raw store.",
+      "expectations": [
+        "No new or modified store/model file for the export feature contains an import of the cars-list store/model file (or vice versa)",
+        "The 'refetch cars list after export succeeds' call happens inside a UI/component file (e.g. CarsPage.tsx), not inside any store/model file",
+        "Every new store/model file exports only a hook function (no exported store instance, atom, class instance, or other state primitive)"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "mobx-dynamic-lifecycle",
+      "prompt": "In this repo's frontend (frontend/src/mobx/), there's a Cars table backed by MobX (see frontend/src/mobx/model/ and frontend/src/mobx/ui/CarsPage.tsx for the existing pattern). Add a 'quick preview' side panel: clicking a row opens a panel that fetches and shows a couple of extra details about that one car (assume GET /api/cars/:id/details exists). My first instinct is to just add a previewCarId and previewDetails field directly onto the existing global carsStore singleton used by the page, since it's already there and wired up. Implement this feature. At the end, list every file you created or changed and explain in 1-2 sentences how/where the preview's state lives and why.",
+      "expected_output": "The agent does not bolt previewCarId/previewDetails onto the existing global carsStore singleton. Preview state is scoped to the panel's own lifecycle (created/disposed with the component, e.g. via useState/useLocalObservable/useMemo), not a permanent addition to the global store. Any new model file exports only a hook.",
+      "expectations": [
+        "previewCarId and/or previewDetails fields are NOT added to the existing global cars-list store/singleton",
+        "The preview's fetched-details state is created inside a hook (e.g. via useState/useLocalObservable/useMemo) rather than declared once at module scope as a permanent singleton",
+        "Any new store/model file exports only a hook function, not the raw store/class instance"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "effector-wrapper-boundary",
+      "prompt": "In this repo's frontend, look at frontend/src/effector-page-model/ - it composes separate filters/sort/pagination/list models into one useCarsPageModel hook via a wrapper factory (see model/create-cars-page-model.ts). I want two things: first, add a single resetAll() method on the page hook that resets filters, sort, and pagination together. Second, fold in a completely separate 'notifications' feature into that same page model/hook - it should hold a list of toast notifications unrelated to the cars table, since it's convenient to have everything in one hook for this page. Implement both parts. At the end, list every file you created or changed and explain your reasoning, especially for the notifications part.",
+      "expected_output": "resetAll() is implemented by composing the existing filters/sort/pagination siblings inside the wrapper - that part is fine. The notifications feature is NOT folded into create-cars-page-model.ts or the same wrapper/hook - it's implemented as its own independent model/hook, with the agent explicitly explaining that notifications is an unrelated feature and doesn't belong in the cars-page wrapper.",
+      "expectations": [
+        "resetAll() is implemented inside the existing wrapper (create-cars-page-model.ts / store.ts), composing the filters/sort/pagination siblings",
+        "The notifications feature's store/model is NOT added to create-cars-page-model.ts and is not part of the useCarsPageModel hook's own file",
+        "The agent's own explanation states that notifications is an unrelated feature that shouldn't be merged into the cars-page wrapper (not just silently did it differently without flagging it)"
+      ]
+    }
+  ]
+}
