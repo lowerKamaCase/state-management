@@ -19,20 +19,38 @@ enum BodyType {
   CONVERTIBLE
 }
 
+enum PreparationTaskStatus {
+  OPEN
+  DONE
+}
+
 model Car {
-  id        String   @id @default(uuid())
-  brand     String
-  model     String
-  year      Int
-  price     Float
-  mileage   Int      @default(0)
-  color     String
-  bodyType  BodyType @default(SEDAN)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String            @id @default(uuid())
+  brand            String
+  model            String
+  year             Int
+  price            Float
+  mileage          Int               @default(0)
+  color            String
+  bodyType         BodyType          @default(SEDAN)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  preparationTasks PreparationTask[]
 
   @@index([brand])
   @@index([price])
   @@index([year])
   @@index([createdAt])
+}
+
+model PreparationTask {
+  id        String                @id @default(uuid())
+  carId     String
+  title     String
+  status    PreparationTaskStatus @default(OPEN)
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  car       Car                   @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  @@index([carId, status])
 }

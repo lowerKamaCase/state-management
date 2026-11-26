@@ -32,7 +32,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Cars API')
-    .setDescription('Shared CRUD API for state-manager comparison frontends')
+    .setDescription('Cars CRUD and preparation tasks API')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);

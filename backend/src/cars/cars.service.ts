@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { PreparationTaskStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { QueryCarsDto } from './dto/query-cars.dto';
@@ -59,8 +59,39 @@ export class CarsService {
       this.prisma.car.count({ where }),
     ]);
 
+    const counts = data.length
+      ? await this.prisma.preparationTask.groupBy({
+          by: ['carId', 'status'],
+          where: {
+            carId: {
+              in: data.map((car) => {
+                return car.id;
+              }),
+            },
+          },
+          _count: { _all: true },
+        })
+      : [];
+    const preparationByCar = new Map<string, { done: number; total: number }>();
+    for (const count of counts) {
+      const preparation = preparationByCar.get(count.carId) ?? {
+        done: 0,
+        total: 0,
+      };
+      preparation.total += count._count._all;
+      if (count.status === PreparationTaskStatus.DONE) {
+        preparation.done += count._count._all;
+      }
+      preparationByCar.set(count.carId, preparation);
+    }
+
     return {
-      data,
+      data: data.map((car) => {
+        return {
+          ...car,
+          preparation: preparationByCar.get(car.id) ?? { done: 0, total: 0 },
+        };
+      }),
       meta: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
     };
   }

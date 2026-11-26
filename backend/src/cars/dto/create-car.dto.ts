@@ -17,24 +17,24 @@ export class CreateCarDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
-  brand: string;
+  brand!: string;
 
   @ApiProperty({ example: 'Corolla' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
-  model: string;
+  model!: string;
 
   @ApiProperty({ example: 2021 })
   @IsInt()
   @Min(1900)
   @Max(new Date().getFullYear() + 1)
-  year: number;
+  year!: number;
 
   @ApiProperty({ example: 24500 })
   @IsNumber()
   @Min(0)
-  price: number;
+  price!: number;
 
   @ApiProperty({ example: 15000, required: false, default: 0 })
   @IsOptional()
@@ -46,9 +46,9 @@ export class CreateCarDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(30)
-  color: string;
+  color!: string;
 
   @ApiProperty({ enum: BodyType, example: BodyType.SEDAN })
   @IsEnum(BodyType)
-  bodyType: BodyType;
+  bodyType!: BodyType;
 }

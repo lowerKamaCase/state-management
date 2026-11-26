@@ -44,17 +44,22 @@ The part every tab reuses unchanged:
 
 ## Backend
 
-NestJS + Prisma + PostgreSQL, one resource: `Car`.
+NestJS + Prisma + PostgreSQL with cars and per-car preparation tasks.
 
 ```
-GET    /api/cars       list (paginated, filterable, sortable) → { data: Car[], meta: { page, pageSize, total, totalPages } }
+GET    /api/cars       list (paginated, filterable, sortable) → { data: (Car & { preparation: { done, total } })[], meta: { page, pageSize, total, totalPages } }
 GET    /api/cars/:id   one car
 POST   /api/cars       create
 PATCH  /api/cars/:id   partial update
 DELETE /api/cars/:id   delete (204 No Content)
+GET    /api/cars/:id/preparation-tasks           list the car's preparation tasks
+POST   /api/cars/:id/preparation-tasks           add a task ({ title })
+PATCH  /api/cars/:id/preparation-tasks/:taskId   change status ({ status: "OPEN" | "DONE" })
 ```
 
 `GET /api/cars` query params: `page`, `pageSize` (max 100), `sortBy` (`price` | `year` | `mileage` | `createdAt` | `brand`), `order` (`asc` | `desc`), plus filters: `brand`, `bodyType`, `color`, `minYear`, `maxYear`, `minPrice`, `maxPrice`, `search`.
+
+Each car in the list also includes `preparation: { done, total }`. Tasks belong to a car and are deleted when that car is deleted. Task titles are required and limited to 100 characters.
 
 CORS origins are read from `CORS_ORIGINS` (comma-separated). Validation is strict (`whitelist: true, forbidNonWhitelisted: true`) — a request body with unknown fields is rejected.
 
