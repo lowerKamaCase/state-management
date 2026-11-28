@@ -10,6 +10,7 @@ import { CarsPage as JotaiCarsPage } from './jotai/ui/CarsPage';
 import { CarsPage as MobxDynamicCarsPage } from './mobx-dynamic-models/ui/CarsPage';
 import { CarsPage as MobxPageModelCarsPage } from './mobx-page-model/ui/CarsPage';
 import { CarsPage as MobxCarsPage } from './mobx/ui/CarsPage';
+import { CarsPage as ReactQueryFsdCarsPage } from './react-query-fsd/pages/cars';
 import { CarsPage as ReactQueryCarsPage } from './react-query/ui/CarsPage';
 import { CarsPage as ReatomDynamicCarsPage } from './reatom-dynamic-models/ui/CarsPage';
 import { CarsPage as ReatomCarsPage } from './reatom/ui/CarsPage';
@@ -43,6 +44,10 @@ export default function App() {
               <Route path="/zustand" element={<ZustandCarsPage />} />
               <Route path="/mobx" element={<MobxCarsPage />} />
               <Route path="/react-query" element={<ReactQueryCarsPage />} />
+              <Route
+                path="/react-query-fsd"
+                element={<ReactQueryFsdCarsPage />}
+              />
               <Route path="/rxjs" element={<RxjsCarsPage />} />
               <Route path="/reatom" element={<ReatomCarsPage />} />
               <Route path="/xstate" element={<XstateCarsPage />} />

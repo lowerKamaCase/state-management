@@ -6,6 +6,7 @@ const TABS = [
   { value: 'zustand', label: 'Zustand' },
   { value: 'mobx', label: 'MobX' },
   { value: 'react-query', label: 'React Query' },
+  { value: 'react-query-fsd', label: 'React Query (FSD)' },
   { value: 'rxjs', label: 'RxJS' },
   { value: 'reatom', label: 'Reatom' },
   { value: 'xstate', label: 'XState' },

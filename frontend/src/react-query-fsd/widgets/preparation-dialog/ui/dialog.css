@@ -1,0 +1,38 @@
+.fsd-preparation-dialog {
+  width: 520px;
+}
+.fsd-preparation-dialog .modal-title {
+  margin-bottom: 0;
+}
+.fsd-task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fsd-task-list li {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.fsd-task-list label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.fsd-task-list input {
+  width: 17px;
+  height: 17px;
+}
+.fsd-task-done span {
+  text-decoration: line-through;
+  color: var(--color-text-dim);
+}
+.fsd-task-form {
+  align-items: flex-end;
+}
+.fsd-task-field {
+  flex: 1;
+}

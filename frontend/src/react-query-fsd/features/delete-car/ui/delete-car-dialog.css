@@ -1,0 +1,12 @@
+.fsd-delete-actions {
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.fsd-delete-button {
+  background: var(--color-danger);
+}
+
+.fsd-delete-button:hover {
+  background: #c92a2a;
+}
