@@ -1,16 +1,13 @@
 export { useCarsList } from './model/useCarsList';
 export { useCarsListParams } from './model/useCarsListParams';
-export { BODY_TYPES } from './model/types';
-export { createCar, updateCar, deleteCar } from './api/cars';
-export type {
-  BodyType,
-  Car,
-  CarListItem,
-  CarsFilters,
-  CarsQueryParams,
-  CarSortField,
-  SortOrder,
-  PaginatedCars,
-  CreateCarInput,
-  UpdateCarInput,
-} from './model/types';
+export { BODY_TYPES } from './model/constants/body-types';
+export type { BodyType } from './model/types/body-type';
+export type { Car } from './model/types/car';
+export type { CarListItem } from './model/types/car-list-item';
+export type { CarsFilters } from './model/types/cars-filters';
+export type { CarsQueryParams } from './model/types/cars-query-params';
+export type { CarSortField } from './model/types/car-sort-field';
+export type { SortOrder } from './model/types/sort-order';
+export type { PaginatedCars } from './model/types/paginated-cars';
+export type { CreateCarInput } from './model/types/create-car-input';
+export type { UpdateCarInput } from './model/types/update-car-input';

@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getCars } from '../api/cars';
-import type { CarsQueryParams } from './types';
+import type { CarsQueryParams } from './types/cars-query-params';
 
 export function useCarsList(params: CarsQueryParams) {
   const query = useQuery({

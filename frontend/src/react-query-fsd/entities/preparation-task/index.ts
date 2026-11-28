@@ -1,3 +1,3 @@
 export { usePreparationTasks } from './model/usePreparationTasks';
-export { addPreparationTask, setPreparationTaskStatus } from './api/tasks';
-export type { PreparationTask, PreparationTaskStatus } from './model/types';
+export type { PreparationTask } from './model/types/preparation-task';
+export type { PreparationTaskStatus } from './model/types/preparation-task-status';

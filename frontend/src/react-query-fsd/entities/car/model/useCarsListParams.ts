@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import type {
-  CarsFilters,
-  CarSortField,
-  CarsQueryParams,
-  SortOrder,
-} from './types';
+import type { CarSortField } from './types/car-sort-field';
+import type { CarsFilters } from './types/cars-filters';
+import type { CarsQueryParams } from './types/cars-query-params';
+import type { SortOrder } from './types/sort-order';
 
 export function useCarsListParams() {
   const [params, setParams] = useState<CarsQueryParams>({

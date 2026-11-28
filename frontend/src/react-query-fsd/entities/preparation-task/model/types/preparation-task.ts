@@ -1,4 +1,4 @@
-export type PreparationTaskStatus = 'OPEN' | 'DONE';
+import type { PreparationTaskStatus } from './preparation-task-status';
 
 export interface PreparationTask {
   id: string;

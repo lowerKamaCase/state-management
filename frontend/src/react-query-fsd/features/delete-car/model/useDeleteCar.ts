@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { deleteCar } from '../../../entities/car';
+import { deleteCar } from '../api/deleteCar';
 
 export function useDeleteCar({ onSuccess }: { onSuccess: () => void }) {
   const mutation = useMutation({ mutationFn: deleteCar, onSuccess });

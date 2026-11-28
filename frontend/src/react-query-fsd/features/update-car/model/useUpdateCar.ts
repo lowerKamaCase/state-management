@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { updateCar, type UpdateCarInput } from '../../../entities/car';
+import type { UpdateCarInput } from '../../../entities/car';
+import { updateCar } from '../api/updateCar';
 
 export function useUpdateCar({ onSuccess }: { onSuccess: () => void }) {
   const mutation = useMutation({

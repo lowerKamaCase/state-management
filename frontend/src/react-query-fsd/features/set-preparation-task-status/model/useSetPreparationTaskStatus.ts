@@ -1,8 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import {
-  setPreparationTaskStatus,
-  type PreparationTaskStatus,
-} from '../../../entities/preparation-task';
+import type { PreparationTaskStatus } from '../../../entities/preparation-task';
+import { setPreparationTaskStatus } from '../api/setPreparationTaskStatus';
 
 export function useSetPreparationTaskStatus({
   onSuccess,

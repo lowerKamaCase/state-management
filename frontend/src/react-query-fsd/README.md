@@ -6,9 +6,9 @@ This tab uses the same car CRUD, filters, sorting, and pagination as the origina
 
 `pages → widgets → features → entities → shared`. Imports between slices on the same layer are avoided. Each slice exposes a narrow `index.ts` public API; the page imports widgets only through those APIs.
 
-- `entities/car` owns car types, HTTP calls, the list query hook, and `useCarsListParams` for reusable car-list filters, sorting, and pagination.
-- `entities/preparation-task` owns task types, HTTP calls, and the task query hook.
-- Each `features/*` slice owns one mutation hook. Mutation hooks do not import other models or invalidate another entity's cache.
+- `entities/car` owns car types, the list request and query hook, and `useCarsListParams` for reusable car-list filters, sorting, and pagination.
+- `entities/preparation-task` owns task types, the list request, and the task query hook.
+- Each `features/*` slice owns its mutation request and hook. Mutation hooks do not import other models or invalidate another entity's cache.
 - Mutation hooks receive callbacks as an options object, for example `useAddPreparationTask({ onSuccess })`. The caller composes the callback; the hook runs it after a successful mutation.
 - `features/delete-car` also owns its confirmation dialog; the mutation error is displayed there. The page receives only the successful deletion callback and refreshes its list.
 - `widgets/car-catalog` renders filters, table, and pagination. It receives data and callbacks through props.

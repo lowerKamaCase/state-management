@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { addPreparationTask } from '../../../entities/preparation-task';
+import { addPreparationTask } from '../api/addPreparationTask';
 
 export function useAddPreparationTask({
   onSuccess,
